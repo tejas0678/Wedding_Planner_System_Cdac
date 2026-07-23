@@ -1,0 +1,71 @@
+/* WedPlan Client Styles */
+
+:root {
+  --pink: #EC0B72;
+  --pink-light: #fce7f3;
+  --pink-hover: #c9005f;
+  --dark: #1a1a2e;
+  --gray-bg: #f3f4f6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f3f4f6;
+}
+
+/* Sidebar transition */
+.sidebar-enter {
+  transform: translateX(-100%);
+}
+.sidebar-enter-active {
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+
+.input-pink:focus {
+  outline: none;
+  border-color: #EC0B72;
+  box-shadow: 0 0 0 2px rgba(236, 11, 114, 0.15);
+}
+
+/* button hover */
+.btn-pink {
+  background-color: #EC0B72;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.btn-pink:hover {
+  background-color: #c9005f;
+  transform: translateY(-1px);
+}
+.btn-pink:active {
+  transform: translateY(0);
+}
+
+/* Card hover */
+.card-hover {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.card-hover:hover {
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
