@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { MdMenu, MdNotifications } from 'react-icons/md'
 import { FaUserCircle } from 'react-icons/fa'
-// import { useAppData } from '../context/AppDataContext'  // Commented out for now
+import { useAppData } from '../../context/client/AppDataContext'  
 
 const pageTitles = {
   '/client/dashboard': 'Dashboard',
@@ -31,13 +31,10 @@ function formatRelativeTime(dateString) {
 export default function Navbar({ onMenuToggle }) {
   const location = useLocation()
   const navigate = useNavigate()
-  // const { notifications } = useAppData()  // Commented out for now
+  const { notifications } = useAppData()  
   const title = pageTitles[location.pathname] || 'Dashboard'
   const [showNotifications, setShowNotifications] = useState(false)
   const notificationsRef = useRef(null)
-  
-  // Temporary empty notifications array
-  const notifications = []
 
   useEffect(() => {
     function handleClickOutside(event) {
