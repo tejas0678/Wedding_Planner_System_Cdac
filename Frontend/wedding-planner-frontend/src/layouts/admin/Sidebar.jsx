@@ -1,186 +1,477 @@
-// src/layouts/admin/Sidebar.jsx
-
 import { NavLink, useNavigate } from "react-router-dom";
+
+// =====================================================
+// 1. NAVIGATION ITEMS
+// =====================================================
+// We keep all sidebar menu items inside this array.
+// Later, we use map() to display them automatically.
 
 const navItems = [
   {
     path: "/admin/dashboard",
     label: "Dashboard",
-    icon: "▦",
+    icon: "📊",
   },
   {
     path: "/admin/clients",
     label: "Manage Clients",
-    icon: "♟",
+    icon: "👥",
   },
   {
     path: "/admin/planners",
     label: "Manage Planners",
-    icon: "♟",
+    icon: "💼",
   },
   {
     path: "/admin/packages",
     label: "Manage Packages",
-    icon: "▣",
+    icon: "📦",
   },
   {
     path: "/admin/bookings",
     label: "Manage Bookings",
-    icon: "☷",
+    icon: "📅",
   },
   {
     path: "/admin/payments",
     label: "Monitor Payments",
-    icon: "₹",
+    icon: "💳",
   },
   {
     path: "/admin/reports",
     label: "Feedback & Reports",
-    icon: "✉",
+    icon: "💬",
   },
 ];
+
+
+// =====================================================
+// 2. SIDEBAR COMPONENT
+// =====================================================
 
 export default function Sidebar({
   sidebarOpen,
   setSidebarOpen,
 }) {
+
+  // useNavigate is used to move the user
+  // to another page using JavaScript.
   const navigate = useNavigate();
+
+
+  // ===================================================
+  // CLOSE SIDEBAR
+  // ===================================================
 
   const closeSidebar = () => {
     setSidebarOpen(false);
   };
 
+
+  // ===================================================
+  // LOGOUT
+  // ===================================================
+
   const logout = () => {
+
+    // For now, simply navigate to login page.
     navigate("/login");
+
   };
+
 
   return (
     <>
-      {/* Mobile Overlay */}
+      {/* =================================================
+          MOBILE OVERLAY
+          =================================================
+          
+          This appears only when sidebar is open
+          on mobile screen.
+      */}
+
       {sidebarOpen && (
+
         <div
           onClick={closeSidebar}
-          className="fixed inset-0 z-30 bg-black/40 lg:hidden"
+          className="
+            fixed
+            inset-0
+            z-30
+            bg-black/40
+            lg:hidden
+          "
         />
+
       )}
 
-      {/* Sidebar */}
+
+      {/* =================================================
+          SIDEBAR
+          ================================================= */}
+
       <aside
         className={`
-          fixed left-0 top-0 z-40 h-screen w-64
-          transform border-r bg-white shadow-lg
-          transition-transform duration-300
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+          fixed
+          left-0
+          top-0
+          z-40
+
+          flex
+          h-screen
+          w-[264px]
+          flex-col
+
+          border-r
+          border-gray-200
+
+          bg-white
+
+          shadow-sm
+
+          transition-transform
+          duration-300
+
+          ${sidebarOpen
+            ? "translate-x-0"
+            : "-translate-x-full"
+          }
+
           lg:translate-x-0
         `}
       >
-        <div className="flex h-full flex-col">
 
-          {/* Logo Section */}
-          <div className="border-b p-5">
 
-            <div className="flex items-center">
+        {/* =================================================
+            LOGO SECTION
+            ================================================= */}
 
-              {/* Heart Icon - Tailwind/Text Only */}
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-100">
-                <span className="text-xl text-rose-500">
-                  ♥
-                </span>
-              </div>
+        <div
+          className="
+            flex
+            h-[85px]
+            items-center
+            justify-between
 
-              {/* Logo Text */}
-              <div className="ml-3">
-                <h2 className="text-lg font-bold text-gray-800">
-                  WedPlan
-                </h2>
+            border-b
+            border-gray-200
 
-                <p className="text-xs text-gray-500">
-                  Admin Panel
-                </p>
-              </div>
+            px-5
+          "
+        >
 
-              {/* Close Button - Mobile */}
-              <button
-                type="button"
-                onClick={closeSidebar}
-                className="ml-auto flex h-8 w-8 items-center justify-center rounded-lg text-xl text-gray-600 hover:bg-gray-100 lg:hidden"
-                aria-label="Close sidebar"
+          {/* Logo and Text */}
+
+          <div className="flex items-center gap-3">
+
+            {/* Heart Logo */}
+
+            <div
+              className="
+                flex
+                h-10
+                w-10
+                items-center
+                justify-center
+
+                rounded-xl
+
+                bg-rose-100
+              "
+            >
+
+              <span className="text-xl text-rose-500">
+                ♥
+              </span>
+
+            </div>
+
+
+            {/* Logo Text */}
+
+            <div>
+
+              <h2
+                className="
+                  text-lg
+                  font-bold
+                  leading-tight
+                  text-gray-800
+                "
               >
-                ×
-              </button>
+                WedPlan
+              </h2>
+
+              <p
+                className="
+                  mt-1
+                  text-xs
+                  text-gray-500
+                "
+              >
+                Admin Panel
+              </p>
 
             </div>
 
           </div>
 
-          {/* Admin Information */}
-          <div className="m-4 rounded-xl bg-rose-50 p-4">
 
-            <p className="text-xs uppercase text-rose-500">
+          {/* =================================================
+              MOBILE CLOSE BUTTON
+              ================================================= */}
+
+          <button
+            type="button"
+            onClick={closeSidebar}
+            className="
+              flex
+              h-8
+              w-8
+              items-center
+              justify-center
+
+              rounded-lg
+
+              text-lg
+              text-gray-500
+
+              hover:bg-gray-100
+
+              lg:hidden
+            "
+          >
+            ×
+          </button>
+
+        </div>
+
+
+        {/* =================================================
+            ADMIN PROFILE CARD
+            ================================================= */}
+
+        <div className="px-4 pt-5">
+
+          <div
+            className="
+              rounded-xl
+
+              border
+              border-rose-100
+
+              bg-rose-50
+
+              px-4
+              py-4
+            "
+          >
+
+            {/* Role */}
+
+            <p
+              className="
+                text-xs
+                font-semibold
+                uppercase
+                tracking-wide
+                text-rose-500
+              "
+            >
               Administrator
             </p>
 
-            <h3 className="mt-2 font-semibold text-gray-800">
+
+            {/* Name */}
+
+            <h3
+              className="
+                mt-2
+                text-base
+                font-semibold
+                text-gray-800
+              "
+            >
               Admin
             </h3>
 
-            <p className="text-sm text-gray-500">
+
+            {/* Email */}
+
+            <p
+              className="
+                mt-1
+                text-sm
+                text-gray-500
+              "
+            >
               admin@example.com
             </p>
 
           </div>
 
-          {/* Navigation */}
-          <nav className="flex-1 px-3">
+        </div>
 
-            {navItems.map(({ path, label, icon }) => (
+
+        {/* =================================================
+            NAVIGATION MENU
+            ================================================= */}
+
+        <nav
+          className="
+            mt-5
+            flex-1
+            px-3
+          "
+        >
+
+          {/* 
+            map() loops through every item
+            in navItems array.
+          */}
+
+          {navItems.map(
+            ({ path, label, icon }) => (
+
               <NavLink
                 key={path}
                 to={path}
                 onClick={closeSidebar}
+
                 className={({ isActive }) =>
-                  `mb-2 flex items-center gap-3 rounded-xl px-4 py-3 transition ${
-                    isActive
-                      ? "bg-rose-500 text-white shadow-sm"
-                      : "text-gray-600 hover:bg-rose-50 hover:text-rose-500"
-                  }`
+
+                  `
+                    mb-1.5
+
+                    flex
+                    h-12
+                    items-center
+                    gap-3
+
+                    rounded-xl
+
+                    px-4
+
+                    text-[15px]
+                    font-medium
+
+                    transition-all
+                    duration-200
+
+                    ${
+                      isActive
+
+                        ? `
+                          bg-rose-100
+                          text-rose-600
+                          shadow-sm
+                        `
+
+                        : `
+                          text-gray-600
+                          hover:bg-rose-50
+                          hover:text-rose-600
+                        `
+                    }
+                  `
                 }
               >
-                {/* Navigation Icon */}
-                <span className="flex h-5 w-5 items-center justify-center text-lg font-semibold">
+
+                {/* =================================================
+                    ICON
+                    ================================================= */}
+
+                <span
+                  className="
+                    flex
+                    w-6
+                    items-center
+                    justify-center
+
+                    text-lg
+                  "
+                >
                   {icon}
                 </span>
 
-                {/* Navigation Label */}
+
+                {/* =================================================
+                    MENU LABEL
+                    ================================================= */}
+
                 <span>
                   {label}
                 </span>
+
               </NavLink>
-            ))}
 
-          </nav>
+            )
+          )}
 
-          {/* Logout */}
-          <div className="border-t p-4">
+        </nav>
 
-            <button
-              type="button"
-              onClick={logout}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-rose-300 py-3 text-rose-500 transition hover:bg-rose-500 hover:text-white"
-            >
-              {/* Logout Icon */}
-              <span className="text-lg">
-                ↪
-              </span>
 
-              <span>
-                Logout
-              </span>
-            </button>
+        {/* =================================================
+            LOGOUT SECTION
+            ================================================= */}
 
-          </div>
+        <div
+          className="
+            border-t
+            border-gray-200
+
+            p-4
+          "
+        >
+
+          <button
+            type="button"
+            onClick={logout}
+
+            className="
+              flex
+              h-12
+              w-full
+              items-center
+              justify-center
+              gap-3
+
+              rounded-xl
+
+              border
+              border-rose-300
+
+              text-[15px]
+              font-medium
+              text-rose-500
+
+              transition-all
+              duration-200
+
+              hover:bg-rose-500
+              hover:text-white
+
+              hover:shadow-md
+            "
+          >
+
+            {/* Logout Icon */}
+
+            <span className="text-lg">
+              🚪
+            </span>
+
+
+            {/* Logout Text */}
+
+            <span>
+              Logout
+            </span>
+
+          </button>
 
         </div>
+
       </aside>
     </>
   );
