@@ -18,13 +18,13 @@ const BannerSection = () => {
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
-                to="/planners"
+                to="/login"
                 className="bg-rose-600 text-white px-8 py-3 rounded-full text-lg font-medium hover:bg-rose-700 transition shadow-md hover:shadow-lg"
               >
                 Find Your Planner
               </Link>
               <Link
-                to="/packages"
+                to="/login"
                 className="bg-white text-rose-600 px-8 py-3 rounded-full text-lg font-medium border-2 border-rose-600 hover:bg-rose-50 transition shadow-md hover:shadow-lg"
               >
                 Browse Packages
