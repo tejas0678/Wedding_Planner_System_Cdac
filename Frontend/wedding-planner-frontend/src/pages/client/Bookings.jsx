@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import BookingCard from '../components/BookingCard'
-import { useAppData } from '../context/AppDataContext'
+import BookingCard from '../../components/client/BookingsCard'
+import { useAppData } from '../../context/client/AppDataContext'
 
 export default function Bookings() {
   const { bookings } = useAppData()
