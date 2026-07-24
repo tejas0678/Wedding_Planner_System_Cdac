@@ -11,7 +11,7 @@ import Profile from "../pages/client/Profile";
 
 const ClientRoutes = (
   <>
-  <Route path="/" element={<Navigate to="/client" replace />} />
+  <Route path="/client" element={<Navigate to="/client" replace />} />
   <Route path="/client" element={<AppDataProvider>
           <ClientLayout />
         </AppDataProvider>}>

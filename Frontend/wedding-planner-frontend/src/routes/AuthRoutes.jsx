@@ -12,6 +12,7 @@ const AuthRoutes = (
       path="/user-register"
       element={<UserRegister />}
     />
+    <Route path="/" element={<Home />} />
     <Route path="/planner-register" element={<PlannerRegister/>}/>
     <Route path="/login" element={<Login/>} />
     <Route path="/home" element={<Home />} />
