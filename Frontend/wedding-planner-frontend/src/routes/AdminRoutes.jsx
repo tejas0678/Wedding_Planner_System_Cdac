@@ -5,6 +5,7 @@ import ManageClients from "../pages/admin/ManageClients";
 import Dashboard from "../pages/admin/Dashboard";
 import ManagePlanners from "../pages/admin/ManagePlanners";
 import ManageBookings from "../pages/admin/ManageBookings";
+import ManagePackages from "../pages/admin/ManagePackages";
 
 
 const AdminRoutes = (
@@ -29,6 +30,10 @@ const AdminRoutes = (
        <Route
         path="bookings"
         element={<ManageBookings />}
+      />
+       <Route
+        path="packages"
+        element={<ManagePackages />}
       />
      
     </Route>
