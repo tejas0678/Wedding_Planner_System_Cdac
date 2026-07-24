@@ -6,7 +6,8 @@ import Dashboard from "../pages/admin/Dashboard";
 import ManagePlanners from "../pages/admin/ManagePlanners";
 import ManageBookings from "../pages/admin/ManageBookings";
 import ManagePackages from "../pages/admin/ManagePackages";
-
+import MonitorPayments from "../pages/admin/MonitorPayments";
+import FeedbackReports from "../pages/admin/FeedbackReports";
 
 const AdminRoutes = (
   <>
@@ -34,6 +35,14 @@ const AdminRoutes = (
        <Route
         path="packages"
         element={<ManagePackages />}
+      />
+      <Route
+        path="payments"
+        element={<MonitorPayments />}
+      />
+     <Route
+        path="reports"
+        element={<FeedbackReports />}
       />
      
     </Route>
