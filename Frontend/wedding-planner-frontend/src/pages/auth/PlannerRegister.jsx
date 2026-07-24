@@ -174,7 +174,7 @@ const PlannerRegister = () => {
           <p className="text-center text-gray-600 mt-6">
             Already have an account?{" "}
             <a
-              href="user-login"
+              href="/login"
               className="text-pink-600 font-semibold hover:underline"
             >
               Login

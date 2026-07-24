@@ -44,14 +44,14 @@ const Login = () => {
       // Redirect to user dashboard (if you have one)
       localStorage.setItem("authToken", "mock-token-user");
       localStorage.setItem("userRole", "USER");
-      alert("User login - Redirect to user dashboard");
-      // navigate("/user-dashboard");
+      //alert("User login - Redirect to user dashboard");
+       navigate("/client");
     } else if (loginData.role === "ADMIN") {
       // Redirect to admin dashboard (if you have one)
       localStorage.setItem("authToken", "mock-token-admin");
       localStorage.setItem("userRole", "ADMIN");
-      alert("Admin login - Redirect to admin dashboard");
-      // navigate("/admin-dashboard");
+      //alert("Admin login - Redirect to admin dashboard");
+       navigate("/admin/dashboard");
     }
   };
 
