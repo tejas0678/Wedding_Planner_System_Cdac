@@ -20,7 +20,7 @@ const DashboardLayout = ({ children, role = "PLANNER" }) => {
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
-    navigate('/');
+    navigate('/home');
   };
 
   const isActive = (path) => {
