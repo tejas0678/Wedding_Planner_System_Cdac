@@ -5,6 +5,7 @@ import Dashboard from "../pages/client/Dashboard";
 import Planners from "../pages/client/Planners";
 import Bookings from "../pages/client/Bookings";
 import Packages from "../pages/client/Packages";
+import Payments from "../pages/client/Payments"; 
 
 const ClientRoutes = (
   <>
@@ -14,10 +15,10 @@ const ClientRoutes = (
         </AppDataProvider>}>
     <Route index element={<Dashboard />} />
     <Route path="dashboard" element={<Dashboard />} />
-    {/* Planner routes */}
     <Route path="planners" element={<Planners />} />
     <Route path="bookings" element={<Bookings />} />
     <Route path="packages" element={<Packages />} />
+    <Route path="payments" element={<Payments />} />
   </Route>
   </>
 );
