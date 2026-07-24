@@ -7,6 +7,7 @@ import Bookings from "../pages/client/Bookings";
 import Packages from "../pages/client/Packages";
 import Payments from "../pages/client/Payments";
 import Feedback from "../pages/client/Feedback";
+import Profile from "../pages/client/Profile";
 
 const ClientRoutes = (
   <>
@@ -21,6 +22,7 @@ const ClientRoutes = (
     <Route path="packages" element={<Packages />} />
     <Route path="payments" element={<Payments />} />
     <Route path="feedback" element={<Feedback />} />
+    <Route path="profile" element={<Profile />} />
   </Route>
   </>
 );
