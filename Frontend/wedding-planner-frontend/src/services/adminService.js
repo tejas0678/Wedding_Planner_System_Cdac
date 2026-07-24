@@ -33,3 +33,12 @@ export async function getPackages() {
   await delay();
   return [];
 }
+export async function getPayments() {
+  await delay();
+  return [];
+}
+
+export async function getFeedbacks() {
+  await delay();
+  return [];
+}
