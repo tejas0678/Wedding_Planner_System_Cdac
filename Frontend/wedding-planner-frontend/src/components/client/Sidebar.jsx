@@ -5,6 +5,7 @@ import {
   MdCardGiftcard,
   MdCalendarToday,
   MdPayment,
+  MdLightbulb,
   MdFeedback,
   MdPerson,
   MdLogout,
@@ -17,6 +18,7 @@ const menuItems = [
   { label: 'Packages', icon: <MdCardGiftcard size={18} />, to: '/client/packages' },
   { label: 'My Bookings', icon: <MdCalendarToday size={18} />, to: '/client/bookings' },
   { label: 'Payments', icon: <MdPayment size={18} />, to: '/client/payments' },
+  { label: 'Suggestions', icon: <MdLightbulb size={18} />, to: '/client/suggestions' },
   { label: 'Feedback', icon: <MdFeedback size={18} />, to: '/client/feedback' },
   { label: 'Profile', icon: <MdPerson size={18} />, to: '/client/profile' },
 ]
