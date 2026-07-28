@@ -10,11 +10,11 @@ import PublicPackages from "../pages/home/PublicPackages";
 
 const AuthRoutes = (
   <>
-    <Route path="/user-register" element={<UserRegister />} />
     <Route path="/" element={<Home />} />
+    <Route path="/home" element={<Home />} />
+    <Route path="/user-register" element={<UserRegister />} />
     <Route path="/planner-register" element={<PlannerRegister/>}/>
     <Route path="/login" element={<Login/>} />
-    <Route path="/home" element={<Home />} />
     <Route path="/find-planners" element={<FindPlanners />} />
     <Route path="/packages" element={<PublicPackages />} />
     <Route path="/about" element={<About/>}/>
