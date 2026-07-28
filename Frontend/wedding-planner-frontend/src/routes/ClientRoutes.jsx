@@ -6,6 +6,7 @@ import Planners from "../pages/client/Planners";
 import Bookings from "../pages/client/Bookings";
 import Packages from "../pages/client/Packages";
 import Payments from "../pages/client/Payments";
+import Suggestions from "../pages/client/Suggestions";
 import Feedback from "../pages/client/Feedback";
 import Profile from "../pages/client/Profile";
 import ProtectedRoute from "../components/common/ProtectedRoute";

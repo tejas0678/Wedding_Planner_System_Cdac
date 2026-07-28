@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { MdSearch } from 'react-icons/md'
+import { MdSearch, MdLocationOn, MdClose } from 'react-icons/md'
 import PlannerCard from '../../components/client/PlannerCard'
 
 // Categories will be fetched from database
@@ -11,6 +11,8 @@ export default function Planners() {
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('All')
   const [selectedPlanner, setSelectedPlanner] = useState(null)
+  const [locationInput, setLocationInput] = useState('')
+  const [locationFilter, setLocationFilter] = useState('')
 
   // Fetch planners from API/database
   useEffect(() => {
@@ -38,8 +40,21 @@ export default function Planners() {
       p.name?.toLowerCase().includes(search.toLowerCase()) ||
       p.city?.toLowerCase().includes(search.toLowerCase())
     const matchesCategory = category === 'All' || p.category === category
-    return matchesSearch && matchesCategory
+    const matchesLocation =
+      !locationFilter || p.city?.toLowerCase().includes(locationFilter.toLowerCase())
+    return matchesSearch && matchesCategory && matchesLocation
   })
+
+  const handleLocationKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      setLocationFilter(locationInput.trim())
+    }
+  }
+
+  const handleClearLocation = () => {
+    setLocationInput('')
+    setLocationFilter('')
+  }
 
   const handleViewProfile = (planner) => {
     setSelectedPlanner(planner)
@@ -88,12 +103,44 @@ export default function Planners() {
           </select>
           <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">▾</span>
         </div>
+        <div className="relative flex-1">
+          <MdLocationOn size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input
+            type="text"
+            value={locationInput}
+            onChange={(e) => setLocationInput(e.target.value)}
+            onKeyDown={handleLocationKeyDown}
+            placeholder="Press Enter to search by location"
+            className="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-sm bg-white focus:outline-none focus:border-[#EC0B72] focus:ring-1 focus:ring-[#EC0B72]/20"
+          />
+        </div>
       </div>
+
+      {/* Active location filter */}
+      {locationFilter && (
+        <div className="flex items-center gap-2 mb-5 -mt-3">
+          <span className="inline-flex items-center gap-1.5 bg-[#EC0B72]/10 text-[#EC0B72] text-xs font-semibold px-3 py-1.5 rounded-full">
+            <MdLocationOn size={14} />
+            Filtering by: {locationFilter}
+          </span>
+          <button
+            onClick={handleClearLocation}
+            className="inline-flex items-center gap-1 text-xs font-semibold text-gray-500 hover:text-gray-700 px-2 py-1"
+          >
+            <MdClose size={14} />
+            Clear
+          </button>
+        </div>
+      )}
 
       {/* Grid */}
       {filtered.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center text-gray-400 text-sm">
-          {planners.length === 0 ? 'No planners available yet. Please check back later.' : 'No planners found for your search.'}
+          {planners.length === 0
+            ? 'No planners available yet. Please check back later.'
+            : locationFilter
+            ? `No planners found in "${locationFilter}".`
+            : 'No planners found for your search.'}
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
