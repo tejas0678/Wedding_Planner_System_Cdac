@@ -1,477 +1,158 @@
+import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-
-// =====================================================
-// 1. NAVIGATION ITEMS
-// =====================================================
-// We keep all sidebar menu items inside this array.
-// Later, we use map() to display them automatically.
+import { FaHeart } from "react-icons/fa";
+import { 
+  FiBarChart2, 
+  FiUsers, 
+  FiBriefcase, 
+  FiPackage, 
+  FiCreditCard, 
+  FiMessageSquare, 
+  FiLogOut,
+  FiX
+} from "react-icons/fi";
 
 const navItems = [
   {
     path: "/admin/dashboard",
-    label: "Dashboard",
-    icon: "📊",
+    label: "Overview & Dashboard",
+    icon: FiBarChart2,
   },
   {
     path: "/admin/clients",
     label: "Manage Clients",
-    icon: "👥",
+    icon: FiUsers,
   },
   {
     path: "/admin/planners",
     label: "Manage Planners",
-    icon: "💼",
+    icon: FiBriefcase,
   },
   {
     path: "/admin/packages",
     label: "Manage Packages",
-    icon: "📦",
-  },
-  {
-    path: "/admin/bookings",
-    label: "Manage Bookings",
-    icon: "📅",
+    icon: FiPackage,
   },
   {
     path: "/admin/payments",
     label: "Monitor Payments",
-    icon: "💳",
+    icon: FiCreditCard,
   },
   {
     path: "/admin/reports",
     label: "Feedback & Reports",
-    icon: "💬",
+    icon: FiMessageSquare,
   },
 ];
 
-
-// =====================================================
-// 2. SIDEBAR COMPONENT
-// =====================================================
-
-export default function Sidebar({
-  sidebarOpen,
-  setSidebarOpen,
-}) {
-
-  // useNavigate is used to move the user
-  // to another page using JavaScript.
+export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const navigate = useNavigate();
-
-
-  // ===================================================
-  // CLOSE SIDEBAR
-  // ===================================================
 
   const closeSidebar = () => {
     setSidebarOpen(false);
   };
 
-
-  // ===================================================
-  // LOGOUT
-  // ===================================================
-
-  const logout = () => {
-
-    // For now, simply navigate to login page.
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
     navigate("/login");
-
   };
-
 
   return (
     <>
-      {/* =================================================
-          MOBILE OVERLAY
-          =================================================
-          
-          This appears only when sidebar is open
-          on mobile screen.
-      */}
-
+      {/* Mobile Backdrop */}
       {sidebarOpen && (
-
         <div
           onClick={closeSidebar}
-          className="
-            fixed
-            inset-0
-            z-30
-            bg-black/40
-            lg:hidden
-          "
+          className="fixed inset-0 z-30 bg-black/50 backdrop-blur-xs lg:hidden"
         />
-
       )}
 
-
-      {/* =================================================
-          SIDEBAR
-          ================================================= */}
-
+      {/* Sidebar Container */}
       <aside
-        className={`
-          fixed
-          left-0
-          top-0
-          z-40
-
-          flex
-          h-screen
-          w-[264px]
-          flex-col
-
-          border-r
-          border-gray-200
-
-          bg-white
-
-          shadow-sm
-
-          transition-transform
-          duration-300
-
-          ${sidebarOpen
-            ? "translate-x-0"
-            : "-translate-x-full"
-          }
-
-          lg:translate-x-0
-        `}
+        className={`fixed left-0 top-0 z-40 flex h-screen w-[270px] flex-col border-r border-rose-100/80 bg-white shadow-md transition-transform duration-300 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0`}
       >
-
-
-        {/* =================================================
-            LOGO SECTION
-            ================================================= */}
-
-        <div
-          className="
-            flex
-            h-[85px]
-            items-center
-            justify-between
-
-            border-b
-            border-gray-200
-
-            px-5
-          "
-        >
-
-          {/* Logo and Text */}
-
+        {/* 1. BRAND LOGO */}
+        <div className="flex h-20 items-center justify-between border-b border-gray-100 px-6">
           <div className="flex items-center gap-3">
-
-            {/* Heart Logo */}
-
-            <div
-              className="
-                flex
-                h-10
-                w-10
-                items-center
-                justify-center
-
-                rounded-xl
-
-                bg-rose-100
-              "
-            >
-
-              <span className="text-xl text-rose-500">
-                ♥
+            <div className="w-10 h-10 rounded-full bg-[#EC3664] flex items-center justify-center text-white shadow-md">
+              <FaHeart className="w-4 h-4" />
+            </div>
+            <div className="flex flex-col leading-none">
+              <span className="font-serif text-xl font-bold tracking-tight text-[#1F191D]">
+                Royal Bliss
               </span>
-
+              <span className="text-[9px] font-bold tracking-[0.2em] text-[#C9972C] uppercase mt-0.5">
+                ADMIN CONTROL PANEL
+              </span>
             </div>
-
-
-            {/* Logo Text */}
-
-            <div>
-
-              <h2
-                className="
-                  text-lg
-                  font-bold
-                  leading-tight
-                  text-gray-800
-                "
-              >
-                WedPlan
-              </h2>
-
-              <p
-                className="
-                  mt-1
-                  text-xs
-                  text-gray-500
-                "
-              >
-                Admin Panel
-              </p>
-
-            </div>
-
           </div>
-
-
-          {/* =================================================
-              MOBILE CLOSE BUTTON
-              ================================================= */}
 
           <button
             type="button"
             onClick={closeSidebar}
-            className="
-              flex
-              h-8
-              w-8
-              items-center
-              justify-center
-
-              rounded-lg
-
-              text-lg
-              text-gray-500
-
-              hover:bg-gray-100
-
-              lg:hidden
-            "
+            className="text-gray-400 hover:text-gray-700 lg:hidden p-1"
           >
-            ×
+            <FiX className="w-5 h-5" />
           </button>
-
         </div>
 
-
-        {/* =================================================
-            ADMIN PROFILE CARD
-            ================================================= */}
-
-        <div className="px-4 pt-5">
-
-          <div
-            className="
-              rounded-xl
-
-              border
-              border-rose-100
-
-              bg-rose-50
-
-              px-4
-              py-4
-            "
-          >
-
-            {/* Role */}
-
-            <p
-              className="
-                text-xs
-                font-semibold
-                uppercase
-                tracking-wide
-                text-rose-500
-              "
-            >
-              Administrator
-            </p>
-
-
-            {/* Name */}
-
-            <h3
-              className="
-                mt-2
-                text-base
-                font-semibold
-                text-gray-800
-              "
-            >
-              Admin
-            </h3>
-
-
-            {/* Email */}
-
-            <p
-              className="
-                mt-1
-                text-sm
-                text-gray-500
-              "
-            >
-              admin@example.com
-            </p>
-
+        {/* 2. ADMIN PROFILE CARD */}
+        <div className="px-5 pt-6">
+          <div className="rounded-2xl border border-rose-100 bg-[#FFF5F7] p-4 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-[#EC3664] text-white flex items-center justify-center font-bold text-sm shadow-xs shrink-0">
+              A
+            </div>
+            <div className="overflow-hidden">
+              <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#EC3664] block">
+                ADMINISTRATOR
+              </span>
+              <h3 className="text-xs font-bold text-gray-900 truncate">
+                System Administrator
+              </h3>
+              <p className="text-[11px] text-gray-500 font-light truncate">
+                admin@royaltouchweddings.com
+              </p>
+            </div>
           </div>
-
         </div>
 
-
-        {/* =================================================
-            NAVIGATION MENU
-            ================================================= */}
-
-        <nav
-          className="
-            mt-5
-            flex-1
-            px-3
-          "
-        >
-
-          {/* 
-            map() loops through every item
-            in navItems array.
-          */}
-
-          {navItems.map(
-            ({ path, label, icon }) => (
-
-              <NavLink
-                key={path}
-                to={path}
-                onClick={closeSidebar}
-
-                className={({ isActive }) =>
-
-                  `
-                    mb-1.5
-
-                    flex
-                    h-12
-                    items-center
-                    gap-3
-
-                    rounded-xl
-
-                    px-4
-
-                    text-[15px]
-                    font-medium
-
-                    transition-all
-                    duration-200
-
-                    ${
-                      isActive
-
-                        ? `
-                          bg-rose-100
-                          text-rose-600
-                          shadow-sm
-                        `
-
-                        : `
-                          text-gray-600
-                          hover:bg-rose-50
-                          hover:text-rose-600
-                        `
-                    }
-                  `
-                }
-              >
-
-                {/* =================================================
-                    ICON
-                    ================================================= */}
-
-                <span
-                  className="
-                    flex
-                    w-6
-                    items-center
-                    justify-center
-
-                    text-lg
-                  "
-                >
-                  {icon}
-                </span>
-
-
-                {/* =================================================
-                    MENU LABEL
-                    ================================================= */}
-
-                <span>
-                  {label}
-                </span>
-
-              </NavLink>
-
-            )
-          )}
-
+        {/* 3. NAVIGATION MENU */}
+        <nav className="mt-6 flex-1 px-4 space-y-1.5 overflow-y-auto">
+          {navItems.map(({ path, label, icon: Icon }) => (
+            <NavLink
+              key={path}
+              to={path}
+              onClick={closeSidebar}
+              className={({ isActive }) =>
+                `flex items-center gap-3.5 px-4 py-3 rounded-2xl text-xs font-bold transition-all duration-200 ${
+                  isActive
+                    ? "bg-[#EC3664] text-white shadow-md"
+                    : "text-gray-700 hover:bg-rose-50 hover:text-[#EC3664]"
+                }`
+              }
+            >
+              <Icon className="w-4 h-4 shrink-0" />
+              <span>{label}</span>
+            </NavLink>
+          ))}
         </nav>
 
-
-        {/* =================================================
-            LOGOUT SECTION
-            ================================================= */}
-
-        <div
-          className="
-            border-t
-            border-gray-200
-
-            p-4
-          "
-        >
-
+        {/* 4. LOGOUT BUTTON */}
+        <div className="border-t border-gray-100 p-4">
           <button
             type="button"
-            onClick={logout}
-
-            className="
-              flex
-              h-12
-              w-full
-              items-center
-              justify-center
-              gap-3
-
-              rounded-xl
-
-              border
-              border-rose-300
-
-              text-[15px]
-              font-medium
-              text-rose-500
-
-              transition-all
-              duration-200
-
-              hover:bg-rose-500
-              hover:text-white
-
-              hover:shadow-md
-            "
+            onClick={handleLogout}
+            className="flex w-full items-center justify-center gap-2 rounded-full border border-rose-200 bg-[#FFF0F3] py-2.5 px-4 text-xs font-bold text-[#EC3664] hover:bg-[#EC3664] hover:text-white transition-all cursor-pointer shadow-2xs"
           >
-
-            {/* Logout Icon */}
-
-            <span className="text-lg">
-              🚪
-            </span>
-
-
-            {/* Logout Text */}
-
-            <span>
-              Logout
-            </span>
-
+            <FiLogOut className="w-4 h-4" />
+            <span>Sign Out Admin</span>
           </button>
-
         </div>
-
       </aside>
     </>
   );
