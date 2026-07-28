@@ -19,7 +19,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         
         {/* Brand Logo */}
-        <Link to="/home" className="flex items-center gap-3 group">
+        <Link to="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 rounded-full bg-[#EC3664] flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-105">
             <FaHeartIcon className="w-4 h-4" />
           </div>

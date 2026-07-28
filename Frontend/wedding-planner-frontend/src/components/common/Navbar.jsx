@@ -42,7 +42,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-20">
           
           {/* Brand Logo */}
-          <Link to="/home" onClick={closeMenus} className="flex items-center gap-3 group">
+          <Link to="/" onClick={closeMenus} className="flex items-center gap-3 group">
             <div className="w-11 h-11 rounded-full bg-[#EC3664] flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-105">
               <FaHeart className="w-5 h-5" />
             </div>
