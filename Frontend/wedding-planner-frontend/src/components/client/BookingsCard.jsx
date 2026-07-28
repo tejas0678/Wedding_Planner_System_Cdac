@@ -1,22 +1,10 @@
 import React, { useState } from 'react';
 import { 
-  FiCheck, 
   FiCalendar, 
   FiChevronUp, 
   FiChevronDown, 
   FiFileText 
 } from 'react-icons/fi';
-
-const defaultSteps = [
-  { id: 1, label: 'Booking Created', completed: true },
-  { id: 2, label: 'Planner Confirmed', completed: true },
-  { id: 3, label: 'Customization Requested', completed: true },
-  { id: 4, label: 'Planner Approval', completed: true },
-  { id: 5, label: 'Quotation Accepted', completed: true },
-  { id: 6, label: 'Payment Completed', completed: true },
-  { id: 7, label: 'Wedding Scheduled', completed: false },
-  { id: 8, label: 'Wedding Completed', completed: false },
-];
 
 export default function BookingCard({ 
   booking = {},
@@ -40,67 +28,11 @@ export default function BookingCard({
     guestCount = '500 Guests',
     countdownDays = 114,
     paymentStatus = 'Partially Paid',
-    steps = defaultSteps,
-    stageText = 'Stage 6 of 8: Payment Completed',
   } = booking;
 
   return (
     <div className="bg-white rounded-3xl border border-rose-100/80 overflow-hidden shadow-xs mb-8">
-      
-      {/* 1. BOOKING PROGRESS TRACKER HEADER */}
-      <div className="bg-[#FFF5F7] p-6 sm:p-8 border-b border-rose-100/60">
-        
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8">
-          <div className="flex items-center gap-2">
-            <span className="text-[#EC3664] font-bold text-sm">✨</span>
-            <span className="text-xs font-extrabold tracking-widest text-[#EC3664] uppercase">
-              BOOKING PROGRESS TRACKER
-            </span>
-          </div>
-
-          <div className="self-start sm:self-auto bg-white border border-rose-100 text-gray-800 text-xs font-bold px-4 py-1.5 rounded-full shadow-2xs">
-            {stageText}
-          </div>
-        </div>
-
-        {/* 8-Stage Progress Steps Timeline */}
-        <div className="relative overflow-x-auto pb-2">
-          
-          {/* Connecting Line */}
-          <div className="hidden md:block absolute top-4 left-6 right-6 h-1 bg-gray-200 z-0">
-            <div 
-              className="h-full bg-[#EC3664] transition-all duration-500" 
-              style={{ width: '71.4%' }} 
-            />
-          </div>
-
-          <div className="grid grid-cols-4 md:grid-cols-8 gap-4 min-w-[650px] relative z-10 text-center">
-            {steps.map((step) => (
-              <div key={step.id} className="flex flex-col items-center group">
-                <div 
-                  className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
-                    step.completed 
-                      ? 'bg-[#EC3664] text-white shadow-md' 
-                      : 'bg-white border-2 border-rose-200 text-gray-400'
-                  }`}
-                >
-                  {step.completed ? <FiCheck className="w-5 h-5" /> : step.id}
-                </div>
-
-                <span className={`text-[10px] sm:text-[11px] font-bold mt-2.5 max-w-[80px] leading-tight ${
-                  step.completed ? 'text-gray-900' : 'text-gray-400'
-                }`}>
-                  {step.label}
-                </span>
-              </div>
-            ))}
-          </div>
-
-        </div>
-
-      </div>
-
-      {/* 2. BOOKING MAIN INFO ROW */}
+      {/* BOOKING MAIN INFO ROW */}
       <div className="p-6 sm:p-8">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           
