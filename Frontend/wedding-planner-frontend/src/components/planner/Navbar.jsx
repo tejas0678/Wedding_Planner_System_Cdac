@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaHeart as FaHeartIcon } from 'react-icons/fa';
-import { FiSearch, FiLogOut, FiCalendar, FiStar } from 'react-icons/fi';
+import { FiSearch, FiLogOut, FiShoppingBag, FiStar } from 'react-icons/fi';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -59,11 +59,11 @@ export default function Navbar() {
           </Link>
 
           <Link
-            to="/client/dashboard"
+            to="/planner-dashboard"
             className="flex items-center gap-1.5 text-[#EC3664] font-semibold py-1 border-b-2 border-[#EC3664]"
           >
-            <FiCalendar className="w-4 h-4 text-[#EC3664]" />
-            <span>My Dashboard</span>
+            <FiShoppingBag className="w-4 h-4 text-[#EC3664]" />
+            <span>Planner Dashboard</span>
           </Link>
         </div>
 
@@ -71,10 +71,10 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <div className="bg-rose-50/80 border border-rose-100/80 rounded-full px-4 py-1.5 flex items-center gap-2.5 shadow-2xs">
             <div className="w-7 h-7 rounded-full bg-[#EC3664] text-white flex items-center justify-center text-xs font-bold shadow-xs">
-              T
+              P
             </div>
             <span className="text-xs font-bold text-gray-800 tracking-wide uppercase">
-              TEJASSAYANE067
+              PLANNER
             </span>
             <button
               onClick={handleLogout}

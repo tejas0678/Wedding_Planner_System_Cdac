@@ -7,41 +7,25 @@ import ManagePlanners from "../pages/admin/ManagePlanners";
 import ManagePackages from "../pages/admin/ManagePackages";
 import MonitorPayments from "../pages/admin/MonitorPayments";
 import FeedbackReports from "../pages/admin/FeedbackReports";
-
+import ProtectedRoute from "../components/common/ProtectedRoute";
 
 const AdminRoutes = (
   <>
     {/* Admin Layout */}
-    <Route path="/admin" element={<Layout />}>
-
-      {/* Dashboard */}
-       <Route
-        path="dashboard"
-        element={<Dashboard />}
-      />
-
-      <Route
-        path="clients"
-        element={<ManageClients />}
-      />
-       <Route
-        path="planners"
-        element={<ManagePlanners />}
-      />
-      
-       <Route
-        path="packages"
-        element={<ManagePackages />}
-      />
-      <Route
-        path="payments"
-        element={<MonitorPayments />}
-      />
-     <Route
-        path="reports"
-        element={<FeedbackReports />}
-      />
-     
+    <Route 
+      path="/admin" 
+      element={
+        <ProtectedRoute allowedRoles={["ADMIN"]}>
+          <Layout />
+        </ProtectedRoute>
+      }
+    >
+      <Route path="dashboard" element={<Dashboard />} />
+      <Route path="clients" element={<ManageClients />} />
+      <Route path="planners" element={<ManagePlanners />} />
+      <Route path="packages" element={<ManagePackages />} />
+      <Route path="payments" element={<MonitorPayments />} />
+      <Route path="reports" element={<FeedbackReports />} />
     </Route>
   </>
 );
