@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { FiMail, FiLock, FiArrowRight, FiSearch, FiStar, FiUser, FiBriefcase, FiShield } from "react-icons/fi";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [loginData, setLoginData] = useState({
-    email: "",
+    email: location.state?.registeredEmail || "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState(location.state?.message || "");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -209,6 +211,13 @@ const Login = () => {
               </button>
             </div>
           </div>
+
+          {/* Success Message Banner (e.g. from registration) */}
+          {successMsg && (
+            <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold p-3.5 rounded-2xl mb-6 text-center">
+              {successMsg}
+            </div>
+          )}
 
           {/* Error Message */}
           {errorMsg && (

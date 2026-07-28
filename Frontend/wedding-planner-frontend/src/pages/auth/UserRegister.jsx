@@ -33,12 +33,12 @@ const UserRegister = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      localStorage.setItem("authToken", "mock-token-user");
-      localStorage.setItem("userRole", "USER");
-      localStorage.setItem("userName", formData.fullName);
-      localStorage.setItem("userEmail", formData.email);
-      alert("Couple Registration Successful! Welcome to Royal Bliss.");
-      navigate("/client/dashboard");
+      navigate("/login", {
+        state: {
+          registeredEmail: formData.email,
+          message: "Registration successful! Please sign in with your email and password.",
+        },
+      });
     }, 600);
   };
 

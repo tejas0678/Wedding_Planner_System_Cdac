@@ -34,13 +34,12 @@ const PlannerRegister = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      localStorage.setItem("authToken", "mock-token-planner");
-      localStorage.setItem("userRole", "PLANNER");
-      localStorage.setItem("userName", formData.fullName);
-      localStorage.setItem("businessName", formData.businessName);
-      localStorage.setItem("userEmail", formData.email);
-      alert("Planner Account Registered Successfully! Welcome to Royal Bliss.");
-      navigate("/planner-dashboard");
+      navigate("/login", {
+        state: {
+          registeredEmail: formData.email,
+          message: "Planner registration successful! Please sign in with your email and password.",
+        },
+      });
     }, 600);
   };
 
