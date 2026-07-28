@@ -53,30 +53,6 @@ export default function ProfileForm({ userData, onUpdate }) {
 
       <form onSubmit={handleSubmit} className="space-y-8">
         
-        {/* Avatar Card */}
-        <div className="bg-[#FFF5F7] border border-rose-100/80 rounded-3xl p-6 flex flex-col sm:flex-row items-center gap-6">
-          <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-[#EC3664] shadow-md shrink-0">
-            <img
-              src={form.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400'}
-              alt="Profile Avatar"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="w-full">
-            <label className="block text-xs font-bold text-gray-700 tracking-wider uppercase mb-2">
-              Profile Avatar Photo URL
-            </label>
-            <input
-              type="text"
-              name="avatarUrl"
-              value={form.avatarUrl}
-              onChange={handleChange}
-              placeholder="https://..."
-              className="w-full bg-white border border-rose-200/80 rounded-2xl px-4 py-3 text-xs sm:text-sm text-gray-800 focus:outline-none focus:border-[#EC3664] focus:ring-1 focus:ring-[#EC3664]/20 font-mono"
-            />
-          </div>
-        </div>
-
         {/* Section 2: Personal & Contact Details */}
         <div>
           <h3 className="font-serif text-xl font-bold text-gray-900 mb-6">
