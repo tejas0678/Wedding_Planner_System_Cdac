@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { FiUser, FiMail, FiPhone, FiLock, FiArrowRight, FiSearch, FiStar } from "react-icons/fi";
+import { registerClient } from "../../services/authService";
 
 const UserRegister = () => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const UserRegister = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.fullName || !formData.email || !formData.password) {
       setErrorMsg("Please fill in all required fields.");
@@ -31,15 +32,15 @@ const UserRegister = () => {
     }
 
     setLoading(true);
-    setTimeout(() => {
+    try {
+      await registerClient(formData);
+      navigate("/client/dashboard");
+    } catch (err) {
+      console.error("Registration error:", err);
+      setErrorMsg(err.message || "Registration failed. Email may already be registered.");
+    } finally {
       setLoading(false);
-      navigate("/login", {
-        state: {
-          registeredEmail: formData.email,
-          message: "Registration successful! Please sign in with your email and password.",
-        },
-      });
-    }, 600);
+    }
   };
 
   return (

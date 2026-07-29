@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "title": "Payment Confirmed",
+    "message": "Your 30% advance payment of ₹2,29,680 for Royal Heritage Package was verified successfully.",
+    "createdAt": "10 minutes ago",
+    "read": false
+  },
+  {
+    "id": 2,
+    "title": "Mandap Decor Layout Updated",
+    "message": "Priya Sharma updated your Udaipur floral mandap 3D layout.",
+    "createdAt": "2 hours ago",
+    "read": true
+  }
+]

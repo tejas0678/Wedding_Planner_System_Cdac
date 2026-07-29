@@ -1,0 +1,6 @@
+[
+  { "id": 1, "name": "Udaipur", "title": "Udaipur Palace Weddings", "count": "18 Planners", "imageUrl": "https://images.unsplash.com/photo-1544077960-604201fe74bc?auto=format&fit=crop&w=400" },
+  { "id": 2, "name": "Goa", "title": "Goa Beach Romance", "count": "24 Planners", "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=400" },
+  { "id": 3, "name": "Jaipur", "title": "Jaipur Fort Royal Celebrations", "count": "15 Planners", "imageUrl": "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=400" },
+  { "id": 4, "name": "Mumbai", "title": "Mumbai Luxury Banquets", "count": "32 Planners", "imageUrl": "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=400" }
+]

@@ -1,32 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PackageCard from './PackageCard';
-
-const defaultPackages = [
-  {
-    id: 1,
-    vendor: 'ROYAL TOUCH WEDDINGS',
-    name: 'Royal Heritage Package',
-    price: '₹5,50,000',
-    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&auto=format&fit=crop',
-  },
-  {
-    id: 2,
-    vendor: 'DESTINATION FOREVER PLANNERS',
-    name: 'Sunset Beach Romance',
-    price: '₹7,20,000',
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop',
-  },
-  {
-    id: 3,
-    vendor: 'BLISSFUL KNOT EVENTS',
-    name: 'Modern Minimalist Elegance',
-    price: '₹2,80,000',
-    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fit=crop',
-  },
-];
+import { getPublicPackages } from '../../services/clientService';
+import { SkeletonCard, ErrorAlert } from './StateFeedback';
 
 const PopularPackagesSection = ({ packages = [] }) => {
-  const displayPackages = packages.length > 0 ? packages : defaultPackages;
+  const [packageList, setPackageList] = useState(packages);
+  const [loading, setLoading] = useState(packages.length === 0);
+  const [error, setError] = useState(null);
+
+  const fetchPackagesData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getPublicPackages();
+      setPackageList(data);
+    } catch (err) {
+      console.error("Failed to load popular packages:", err);
+      setError("Unable to load popular packages.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (packages.length > 0) {
+      setPackageList(packages);
+      setLoading(false);
+    } else {
+      fetchPackagesData();
+    }
+  }, [packages]);
 
   return (
     <section className="py-20 bg-[#FAF8F9]">
@@ -42,12 +45,26 @@ const PopularPackagesSection = ({ packages = [] }) => {
           </h2>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && !loading && <ErrorAlert message={error} onRetry={fetchPackagesData} />}
+
         {/* Packages Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {displayPackages.map((pkg) => (
-            <PackageCard key={pkg.id} packageData={pkg} />
-          ))}
-        </div>
+        {!loading && !error && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {packageList.slice(0, 3).map((pkg) => (
+              <PackageCard key={pkg.id} packageData={pkg} />
+            ))}
+          </div>
+        )}
 
       </div>
     </section>

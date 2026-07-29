@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import PackageCard from '../../components/client/PackageCard'
+import PackageCard from '../../components/common/PackageCard'
 
 export default function Packages() {
   const [packages, setPackages] = useState([])

@@ -1,259 +1,124 @@
-// Admin Service returning demo data for admin workspace management
+import api from './api';
 
-const delay = (ms = 300) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
+const fetchMockData = async (fileName) => {
+  const res = await fetch(`/mock/${fileName}`);
+  return await res.json();
+};
 
 export async function getDashboardStats() {
-  await delay();
-
-  return {
-    totalClients: 124,
-    totalPlanners: 18,
-    totalWeddings: 42,
-    totalPackages: 12,
-    pendingBookings: 8,
-    recentActivities: [
-      {
-        id: 1,
-        clientName: "TEJASSAYANE067 & Meera Kapoor",
-        plannerName: "Royal Touch Weddings Studio",
-        venue: "The Leela Palace, Udaipur",
-        date: "Nov 20, 2026",
-        status: "Payment Completed",
-        amount: "₹7,65,600",
-      },
-      {
-        id: 2,
-        clientName: "Rahul & Divya Kulkarni",
-        plannerName: "Destination Forever Planners",
-        venue: "Taj Exotica, Goa",
-        date: "Dec 15, 2026",
-        status: "Planner Confirmed",
-        amount: "₹7,20,000",
-      },
-      {
-        id: 3,
-        clientName: "Aarav & Ananya Sharma",
-        plannerName: "Vedic Sutra Celebrations",
-        venue: "City Palace, Jaipur",
-        date: "Jan 10, 2027",
-        status: "Quotation Pending",
-        amount: "₹8,50,000",
-      },
-    ],
-    topPlanners: [
-      {
-        id: 1,
-        name: "Royal Touch Weddings Studio",
-        specialization: "Royal Destination & Mandap Decor",
-        city: "Mumbai",
-        rating: "4.9",
-        reviews: 128,
-        earnings: "₹85.0 Lakhs",
-        avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200",
-      },
-      {
-        id: 2,
-        name: "Vedic Sutra Celebrations",
-        specialization: "Heritage Forts & Palace Mandaps",
-        city: "Udaipur",
-        rating: "4.8",
-        reviews: 95,
-        earnings: "₹62.5 Lakhs",
-        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200",
-      },
-      {
-        id: 3,
-        name: "Destination Forever Planners",
-        specialization: "Sunset Beach Romance",
-        city: "Goa",
-        rating: "4.9",
-        reviews: 110,
-        earnings: "₹54.0 Lakhs",
-        avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200",
-      },
-    ],
-  };
+  try {
+    const res = await api.get('/admin/dashboard/stats');
+    if (res && res.data) return res.data;
+  } catch (err) {
+    console.warn("Backend unavailable, fetching mock admin dashboard stats:", err);
+  }
+  return new Promise((resolve) => {
+    setTimeout(async () => {
+      const data = await fetchMockData('adminDashboard.json');
+      resolve(data);
+    }, 400);
+  });
 }
 
 export async function getClients() {
-  await delay();
-  return [
-    {
-      id: "CLT-1001",
-      name: "TEJASSAYANE067",
-      email: "tejas0678@gmail.com",
-      phone: "+91 98765 43210",
-      status: "Active",
-      created: "2026-05-12",
-    },
-    {
-      id: "CLT-1002",
-      name: "Meera Kapoor",
-      email: "meera.k@gmail.com",
-      phone: "+91 98220 11223",
-      status: "Active",
-      created: "2026-06-01",
-    },
-    {
-      id: "CLT-1003",
-      name: "Rahul Kulkarni",
-      email: "rahul.kulkarni@gmail.com",
-      phone: "+91 97654 88990",
-      status: "Active",
-      created: "2026-06-18",
-    },
-    {
-      id: "CLT-1004",
-      name: "Ananya Sharma",
-      email: "ananya.sharma@gmail.com",
-      phone: "+91 91234 56789",
-      status: "Active",
-      created: "2026-07-04",
-    },
-  ];
+  try {
+    const res = await api.get('/admin/clients');
+    if (res && res.data && res.data.length > 0) return res.data;
+  } catch (err) {
+    console.warn("Backend unavailable, fetching mock clients:", err);
+  }
+  return new Promise((resolve) => {
+    setTimeout(async () => {
+      const data = await fetchMockData('clients.json');
+      resolve(data);
+    }, 400);
+  });
 }
 
 export async function getPlanners() {
-  await delay();
-  return [
-    {
-      id: "PLN-2001",
-      name: "Royal Touch Weddings Studio",
-      agency: "Royal Touch Events Pvt Ltd",
-      email: "info@royaltouch.com",
-      phone: "+91 98111 22334",
-      city: "Mumbai",
-      experience: "8 Years",
-      rating: "4.9",
-      status: "Approved",
-    },
-    {
-      id: "PLN-2002",
-      name: "Vedic Sutra Celebrations",
-      agency: "Vedic Sutra Hospitality",
-      email: "contact@vedicsutra.in",
-      phone: "+91 98222 33445",
-      city: "Udaipur",
-      experience: "12 Years",
-      rating: "4.8",
-      status: "Approved",
-    },
-    {
-      id: "PLN-2003",
-      name: "Destination Forever Planners",
-      agency: "Destination Forever Beach Events",
-      email: "hello@destinationforever.com",
-      phone: "+91 98333 44556",
-      city: "Goa",
-      experience: "6 Years",
-      rating: "4.9",
-      status: "Approved",
-    },
-  ];
+  try {
+    const res = await api.get('/admin/planners');
+    if (res && res.data && res.data.length > 0) return res.data;
+  } catch (err) {
+    console.warn("Backend unavailable, fetching mock planners:", err);
+  }
+  return new Promise((resolve) => {
+    setTimeout(async () => {
+      const data = await fetchMockData('planners.json');
+      resolve(data);
+    }, 400);
+  });
 }
 
-export async function getBookings() {
-  await delay();
-  return [
-    {
-      id: "BK-8001",
-      clientName: "TEJASSAYANE067",
-      plannerName: "Royal Touch Weddings Studio",
-      packageName: "Royal Heritage Destination Package",
-      weddingDate: "2026-11-20",
-      status: "Confirmed",
-      amount: "₹7,65,600",
-    },
-    {
-      id: "BK-8002",
-      clientName: "Rahul Kulkarni",
-      plannerName: "Destination Forever Planners",
-      packageName: "Sunset Beach Romance Package",
-      weddingDate: "2026-12-15",
-      status: "Confirmed",
-      amount: "₹7,20,000",
-    },
-  ];
+export async function approvePlanner(id) {
+  try {
+    const res = await api.put(`/admin/planners/${id}/approve`);
+    if (res && res.data) return res.data;
+  } catch (err) {
+    console.warn("Backend unavailable, simulating planner approval:", err);
+  }
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ success: true, id, status: 'APPROVED' });
+    }, 400);
+  });
+}
+
+export async function rejectPlanner(id) {
+  try {
+    const res = await api.put(`/admin/planners/${id}/reject`);
+    if (res && res.data) return res.data;
+  } catch (err) {
+    console.warn("Backend unavailable, simulating planner rejection:", err);
+  }
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ success: true, id, status: 'REJECTED' });
+    }, 400);
+  });
 }
 
 export async function getPackages() {
-  await delay();
-  return [
-    {
-      id: "PKG-501",
-      title: "Royal Heritage Destination Package",
-      planner: "Royal Touch Weddings Studio",
-      price: "₹7,65,600",
-      category: "Royal Destination",
-      capacity: "300 Guests",
-      status: "Published",
-    },
-    {
-      id: "PKG-502",
-      title: "Sunset Beach Romance Package",
-      planner: "Destination Forever Planners",
-      price: "₹7,20,000",
-      category: "Beach Romance",
-      capacity: "200 Guests",
-      status: "Published",
-    },
-    {
-      id: "PKG-503",
-      title: "Grand Palace Sangeet Spectacle",
-      planner: "Vedic Sutra Celebrations",
-      price: "₹8,50,000",
-      category: "Traditional Sangeet",
-      capacity: "400 Guests",
-      status: "Published",
-    },
-  ];
+  try {
+    const res = await api.get('/packages');
+    if (res && res.data && res.data.length > 0) return res.data;
+  } catch (err) {
+    console.warn("Backend unavailable, fetching mock packages for admin:", err);
+  }
+  return new Promise((resolve) => {
+    setTimeout(async () => {
+      const data = await fetchMockData('packages.json');
+      resolve(data);
+    }, 400);
+  });
 }
 
 export async function getPayments() {
-  await delay();
-  return [
-    {
-      id: "PAY-9001",
-      bookingId: "BK-8001",
-      client: "TEJASSAYANE067",
-      amount: "₹2,29,680",
-      type: "30% Advance Payment",
-      status: "Successful",
-      date: "2026-07-28",
-      gateway: "Razorpay",
-    },
-    {
-      id: "PAY-9002",
-      bookingId: "BK-8002",
-      client: "Rahul Kulkarni",
-      amount: "₹2,16,000",
-      type: "30% Advance Payment",
-      status: "Successful",
-      date: "2026-07-25",
-      gateway: "Razorpay",
-    },
-  ];
+  try {
+    const res = await api.get('/admin/payments');
+    if (res && res.data && res.data.length > 0) return res.data;
+  } catch (err) {
+    console.warn("Backend unavailable, fetching mock payments for admin:", err);
+  }
+  return new Promise((resolve) => {
+    setTimeout(async () => {
+      const data = await fetchMockData('payments.json');
+      resolve(data);
+    }, 400);
+  });
 }
 
 export async function getFeedbacks() {
-  await delay();
-  return [
-    {
-      id: "FBD-101",
-      client: "TEJASSAYANE067",
-      planner: "Royal Touch Weddings Studio",
-      rating: 5,
-      comment: "Exceptional royal decor and flawless execution at Lake Palace!",
-      date: "2026-07-28",
-    },
-    {
-      id: "FBD-102",
-      client: "Rahul Kulkarni",
-      planner: "Destination Forever Planners",
-      rating: 5,
-      comment: "Unforgettable beach setup and sunset lighting in Goa.",
-      date: "2026-07-26",
-    },
-  ];
+  try {
+    const res = await api.get('/admin/reports/feedback');
+    if (res && res.data && res.data.length > 0) return res.data;
+  } catch (err) {
+    console.warn("Backend unavailable, fetching mock feedbacks for admin:", err);
+  }
+  return new Promise((resolve) => {
+    setTimeout(async () => {
+      const data = await fetchMockData('reviews.json');
+      resolve(data);
+    }, 400);
+  });
 }

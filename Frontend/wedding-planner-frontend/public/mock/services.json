@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "plannerId": 1,
+    "name": "Royal Mandap & Floral Decor",
+    "category": "DECORATION",
+    "price": "₹1,50,000",
+    "pricingType": "FIXED",
+    "description": "Grand traditional and contemporary floral mandap designs with import flowers and LED lighting."
+  },
+  {
+    "id": 2,
+    "plannerId": 1,
+    "name": "Gourmet Buffet Catering",
+    "category": "CATERING",
+    "price": "₹1,200",
+    "pricingType": "PER_GUEST",
+    "description": "Multi-cuisine live buffet counters (Indian, Continental, Oriental & Live Dessert Bar)."
+  },
+  {
+    "id": 3,
+    "plannerId": 2,
+    "name": "Sunset Beach Mandap Setup",
+    "category": "DECORATION",
+    "price": "₹1,80,000",
+    "pricingType": "FIXED",
+    "description": "Custom bamboo and pastel floral canopy with ocean view."
+  }
+]

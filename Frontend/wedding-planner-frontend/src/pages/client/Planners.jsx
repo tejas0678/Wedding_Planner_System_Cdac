@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { MdSearch } from 'react-icons/md'
-import PlannerCard from '../../components/client/PlannerCard'
+import PlannerCard from '../../components/common/PlannerCard'
 
 // Categories will be fetched from database
 const categories = ['All', 'Luxury Weddings', 'Garden Weddings', 'Destination Weddings', 'Classic Ballroom', 'Beach Weddings']

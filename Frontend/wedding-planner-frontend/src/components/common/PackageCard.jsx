@@ -1,19 +1,36 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createBooking } from '../../services/bookingService';
 
 const PackageCard = ({ packageData }) => {
   const navigate = useNavigate();
-  const { name, price, vendor, image } = packageData;
+  const { id, title, name, price, vendor, plannerName, image, imageUrl, capacity } = packageData;
+  const pkgTitle = title || name || 'Royal Heritage Package';
 
-  const handleBookClick = (e) => {
+  const handleBookClick = async (e) => {
     if (e) e.stopPropagation();
     const token = localStorage.getItem('authToken');
 
     if (!token) {
       alert('Please sign in to continue.');
       navigate('/login');
-    } else {
+      return;
+    }
+
+    try {
+      await createBooking({
+        packageId: id,
+        plannerId: packageData.plannerId || 1,
+        packageName: pkgTitle,
+        amount: price,
+        plannerName: plannerName || vendor || "Royal Touch Weddings Studio",
+        guestCount: capacity || "300 Guests"
+      });
+      alert(`Booking Request for "${pkgTitle}" Created Successfully! Redirecting to your Client Dashboard...`);
       navigate('/client/dashboard');
+    } catch (err) {
+      console.error("Booking error:", err);
+      alert("Failed to create booking. Please try again.");
     }
   };
 
@@ -22,8 +39,8 @@ const PackageCard = ({ packageData }) => {
       {/* Top Image */}
       <div className="h-64 w-full overflow-hidden bg-gray-100">
         <img
-          src={image || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&auto=format&fit=crop'}
-          alt={name}
+          src={image || imageUrl || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&auto=format&fit=crop'}
+          alt={pkgTitle}
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
         />
       </div>
@@ -33,12 +50,12 @@ const PackageCard = ({ packageData }) => {
         <div>
           {/* Vendor Tag */}
           <span className="text-[11px] font-extrabold tracking-wider text-[#EC3664] uppercase block mb-1">
-            {vendor || 'ROYAL TOUCH WEDDINGS'}
+            {vendor || plannerName || 'ROYAL TOUCH WEDDINGS'}
           </span>
 
           {/* Package Title */}
           <h3 className="font-serif text-2xl font-bold text-gray-900 leading-snug">
-            {name}
+            {pkgTitle}
           </h3>
 
           {/* Price */}

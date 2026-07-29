@@ -3,7 +3,8 @@ import {
   FiCalendar, 
   FiChevronUp, 
   FiChevronDown, 
-  FiFileText 
+  FiFileText,
+  FiTrash2 
 } from 'react-icons/fi';
 
 export default function BookingCard({ 
@@ -11,7 +12,8 @@ export default function BookingCard({
   onCustomizePackage,
   onContactPlanner,
   onViewInvoice,
-  onPayAdvance
+  onPayAdvance,
+  onRemoveBooking
 }) {
   const [expanded, setExpanded] = useState(true);
 
@@ -29,6 +31,8 @@ export default function BookingCard({
     countdownDays = 114,
     paymentStatus = 'Partially Paid',
   } = booking;
+
+  const isPending = (status || '').toLowerCase() === 'pending';
 
   return (
     <div className="bg-white rounded-3xl border border-rose-100/80 overflow-hidden shadow-xs mb-8">
@@ -48,7 +52,9 @@ export default function BookingCard({
                 <span className="bg-rose-50 text-[#EC3664] text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-rose-100 uppercase">
                   {id}
                 </span>
-                <span className="bg-emerald-100/80 text-emerald-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
+                  isPending ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100/80 text-emerald-700'
+                }`}>
                   {status}
                 </span>
               </div>
@@ -166,6 +172,16 @@ export default function BookingCard({
               >
                 Contact Planner
               </button>
+
+              {isPending && onRemoveBooking && (
+                <button
+                  onClick={() => onRemoveBooking(id)}
+                  className="bg-rose-100 hover:bg-rose-200 text-rose-700 px-6 py-2.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ml-auto"
+                >
+                  <FiTrash2 className="w-4 h-4 text-rose-600" />
+                  <span>Remove Pending Request</span>
+                </button>
+              )}
             </div>
 
           </div>

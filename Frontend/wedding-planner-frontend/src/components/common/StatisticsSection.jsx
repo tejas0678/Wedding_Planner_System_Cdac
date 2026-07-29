@@ -1,11 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { getDashboardStats } from '../../services/adminService';
 
 const StatisticsSection = ({ statistics = {} }) => {
+  const [stats, setStats] = useState(statistics);
+
+  useEffect(() => {
+    if (Object.keys(statistics).length > 0) {
+      setStats(statistics);
+    } else {
+      async function loadStats() {
+        try {
+          const data = await getDashboardStats();
+          if (data) {
+            setStats({
+              weddingsPlanned: data.totalWeddings || 86,
+              expertPlanners: data.totalPlanners || 28,
+              happyCouples: 99,
+              citiesServed: 12
+            });
+          }
+        } catch (err) {
+          console.error("Failed to load platform stats:", err);
+        }
+      }
+      loadStats();
+    }
+  }, [statistics]);
+
   const statItems = [
-    { label: 'Weddings Planned', value: statistics.weddingsPlanned, suffix: '+' },
-    { label: 'Expert Planners', value: statistics.expertPlanners, suffix: '+' },
-    { label: 'Happy Couples', value: statistics.happyCouples, suffix: '%' },
-    { label: 'Cities Served', value: statistics.citiesServed, suffix: '+' },
+    { label: 'Weddings Planned', value: stats.weddingsPlanned, suffix: '+' },
+    { label: 'Expert Planners', value: stats.expertPlanners, suffix: '+' },
+    { label: 'Happy Couples', value: stats.happyCouples, suffix: '%' },
+    { label: 'Cities Served', value: stats.citiesServed, suffix: '+' },
   ];
 
   return (

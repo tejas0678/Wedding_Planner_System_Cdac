@@ -11,6 +11,7 @@ import {
   FiMusic,
   FiMapPin
 } from 'react-icons/fi';
+import { createBooking } from '../../services/bookingService';
 
 export default function PackageCustomizerPage({ addedCustomItems = [], onSubmitCustomization }) {
   // 1. Catering State
@@ -78,18 +79,31 @@ export default function PackageCustomizerPage({ addedCustomItems = [], onSubmitC
     return base;
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     const finalPrice = calculateCustomPrice();
     setSubmittedStatus('Pending');
-    alert(`Package Customization Request submitted successfully! Total Estimated Quote: ₹${finalPrice.toLocaleString('en-IN')}. Planner status set to: Pending Approval.`);
-    if (onSubmitCustomization) {
-      onSubmitCustomization({
-        status: 'Pending',
-        estimatedCost: `₹${finalPrice.toLocaleString('en-IN')}`,
-        guestCount,
-        decorTheme,
+
+    try {
+      await createBooking({
+        packageName: `${decorTheme} Custom Package`,
+        amount: `₹${finalPrice.toLocaleString('en-IN')}`,
+        plannerName: 'Royal Touch Weddings Studio',
+        guestCount: `${guestCount} Guests`,
+        venue: stageDecor,
+        location: 'Udaipur, Rajasthan'
       });
+      alert(`Package Customization & Booking Request submitted successfully! Total Estimated Quote: ₹${finalPrice.toLocaleString('en-IN')}. Added to your Booking History!`);
+      if (onSubmitCustomization) {
+        onSubmitCustomization({
+          status: 'Pending',
+          estimatedCost: `₹${finalPrice.toLocaleString('en-IN')}`,
+          guestCount,
+          decorTheme,
+        });
+      }
+    } catch (err) {
+      console.error("Customization booking error:", err);
     }
   };
 

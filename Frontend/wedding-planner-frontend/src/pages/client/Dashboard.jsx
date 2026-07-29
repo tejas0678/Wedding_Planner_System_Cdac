@@ -21,22 +21,18 @@ import BookingCard from '../../components/client/BookingsCard';
 import ProfileForm from '../../components/client/ProfileForm';
 import PackageCustomizerPage from '../../components/client/PackageCustomizerPage';
 import FeedbackReviewSection from '../../components/client/FeedbackReviewSection';
-import { useAppData } from '../../context/client/AppDataContext';
+import { getClientProfile, getClientBookings } from '../../services/clientService';
+import { removeBooking } from '../../services/bookingService';
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  let bookingsData = [];
-  try {
-    const ctx = useAppData();
-    if (ctx && ctx.bookings) {
-      bookingsData = ctx.bookings;
-    }
-  } catch (e) {
-    console.warn("useAppData safe fallback:", e);
-  }
-
-  const [activeTab, setActiveTab] = useState('bookings'); // 'bookings' | 'customizer' | 'feedback' | 'chat' | 'profile'
-  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('bookings');
+  const [loading, setLoading] = useState(true);
+  const [clientProfile, setClientProfile] = useState({
+    fullName: localStorage.getItem('userName') || 'TEJASSAYANE067',
+    email: localStorage.getItem('userEmail') || 'client@gmail.com',
+  });
+  const [bookingsList, setBookingsList] = useState([]);
 
   // Modal state
   const [selectedInvoice, setSelectedInvoice] = useState(null);
@@ -46,9 +42,9 @@ export default function Dashboard() {
 
   // Live Chat State & Handlers
   const [messages, setMessages] = useState([
-    { id: 1, sender: 'planner', text: 'Namaste Tejash & Meera! I have updated your Udaipur mandap decor layout. Please check the customizer.', time: '10:30 AM' },
+    { id: 1, sender: 'planner', text: 'Namaste! I have updated your mandap decor layout. Please check the customizer.', time: '10:30 AM' },
     { id: 2, sender: 'client', text: 'Thank you! We love the royal golden floral mandap theme.', time: '10:35 AM' },
-    { id: 3, sender: 'planner', text: 'Great! The advance 30% payment gateway is now active on your dashboard.', time: '10:38 AM' }
+    { id: 3, sender: 'planner', text: 'Great! The advance 30% payment option is active on your dashboard.', time: '10:38 AM' }
   ]);
   const [newMessage, setNewMessage] = useState('');
 
@@ -66,7 +62,6 @@ export default function Dashboard() {
     setMessages((prev) => [...prev, userMsg]);
     setNewMessage('');
 
-    // Automatic Studio Response Simulation
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
@@ -80,38 +75,39 @@ export default function Dashboard() {
     }, 800);
   };
 
-  const sampleBookings = [
-    {
-      id: 'WPB-882910',
-      planner: 'Royal Touch Weddings Studio',
-      plannerPhone: '+91 98765 11111',
-      package: 'Royal Heritage Destination Package',
-      status: 'Confirmed',
-      amount: '₹7,65,600',
-      plannerAvatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200',
-      venue: 'The Leela Palace Resort',
-      location: 'Lake Pichola, Udaipur, Rajasthan • Udaipur',
-      guestCount: '500 Guests',
-      countdownDays: 114,
-      paymentStatus: 'Partially Paid',
-      stageText: 'Stage 6 of 8: Payment Completed',
-    },
-    {
-      id: 'WPB-882911',
-      planner: 'Destination Forever Planners',
-      plannerPhone: '+91 98765 22222',
-      package: 'Sunset Beach Romance Package',
-      status: 'Confirmed',
-      amount: '₹7,20,000',
-      plannerAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200',
-      venue: 'Taj Exotica Resort & Spa',
-      location: 'Benaulim Beach, South Goa • Goa',
-      guestCount: '300 Guests',
-      countdownDays: 180,
-      paymentStatus: 'Advance Paid',
-      stageText: 'Stage 4 of 8: Planner Approval',
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
+      const profile = await getClientProfile();
+      if (profile) setClientProfile(profile);
+
+      const bookings = await getClientBookings();
+      if (bookings && bookings.length > 0) {
+        setBookingsList(bookings);
+      } else {
+        setBookingsList([]);
+      }
+    } catch (err) {
+      console.error("Error loading client dashboard data:", err);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const handleRemoveBooking = async (bookingId) => {
+    if (window.confirm("Are you sure you want to remove this pending booking request?")) {
+      try {
+        await removeBooking(bookingId);
+        setBookingsList((prev) => prev.filter((b) => b.id !== bookingId && b.bookingNumber !== bookingId));
+      } catch (err) {
+        console.error("Failed to remove booking:", err);
+      }
+    }
+  };
 
   const handleSimulatePayment = () => {
     setPaymentSuccess(true);
@@ -162,7 +158,7 @@ export default function Dashboard() {
             </div>
 
             <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-white">
-              TEJASSAYANE067 & Meera Kapoor
+              {clientProfile.fullName || "TEJASSAYANE067"}
             </h1>
 
             <p className="text-rose-100/80 text-sm font-light mt-1">
@@ -195,7 +191,7 @@ export default function Dashboard() {
           }`}
         >
           <FiCalendar className="w-4 h-4" />
-          <span>Booking History ({sampleBookings.length})</span>
+          <span>Booking History ({bookingsList.length})</span>
         </button>
 
         <button
@@ -209,8 +205,6 @@ export default function Dashboard() {
           <FiSliders className="w-4 h-4" />
           <span>Package Customizer</span>
         </button>
-
-
 
         <button
           onClick={() => setActiveTab('feedback')}
@@ -260,22 +254,37 @@ export default function Dashboard() {
               Your Booking History
             </h2>
             <span className="text-xs font-bold text-gray-500">
-              {sampleBookings.length} Active Weddings
+              {bookingsList.length} Active Weddings
             </span>
           </div>
 
-          <div className="space-y-8">
-            {sampleBookings.map((b) => (
-              <BookingCard 
-                key={b.id} 
-                booking={b} 
-                onCustomizePackage={() => setActiveTab('customizer')}
-                onContactPlanner={() => setActiveTab('chat')}
-                onViewInvoice={(booking) => setSelectedInvoice(booking)}
-                onPayAdvance={(booking) => setPaymentModalBooking(booking)}
-              />
-            ))}
-          </div>
+          {bookingsList.length > 0 ? (
+            <div className="space-y-8">
+              {bookingsList.map((b) => (
+                <BookingCard 
+                  key={b.id || b.bookingNumber} 
+                  booking={b} 
+                  onCustomizePackage={() => setActiveTab('customizer')}
+                  onContactPlanner={() => setActiveTab('chat')}
+                  onViewInvoice={(booking) => setSelectedInvoice(booking)}
+                  onPayAdvance={(booking) => setPaymentModalBooking(booking)}
+                  onRemoveBooking={(bId) => handleRemoveBooking(bId)}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white rounded-3xl p-12 text-center border border-gray-100 shadow-2xs">
+              <span className="text-4xl block mb-3">📅</span>
+              <h3 className="font-serif text-xl font-bold text-gray-900 mb-1">No Booking Requests Found</h3>
+              <p className="text-xs text-gray-500 mb-4">You have not requested any wedding package bookings yet.</p>
+              <button
+                onClick={() => navigate('/packages')}
+                className="bg-[#EC3664] hover:bg-[#d42d57] text-white px-6 py-2.5 rounded-full text-xs font-bold shadow-xs cursor-pointer"
+              >
+                Browse Packages
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -283,10 +292,12 @@ export default function Dashboard() {
       {activeTab === 'customizer' && (
         <PackageCustomizerPage 
           addedCustomItems={addedCustomItems}
-          onSubmitCustomization={() => setActiveTab('bookings')}
+          onSubmitCustomization={() => {
+            fetchDashboardData();
+            setActiveTab('bookings');
+          }}
         />
       )}
-
 
       {/* TAB 4: FEEDBACK & REVIEWS */}
       {activeTab === 'feedback' && (

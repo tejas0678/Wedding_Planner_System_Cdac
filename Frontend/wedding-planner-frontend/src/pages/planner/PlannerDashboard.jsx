@@ -23,11 +23,17 @@ import {
   FiDollarSign,
   FiActivity
 } from 'react-icons/fi';
+import { 
+  getPlannerDashboardStats, 
+  getPlannerProfile, 
+  getPlannerPackages, 
+  getPlannerServices, 
+  getPlannerPortfolio 
+} from '../../services/plannerService';
 
 export const PlannerDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile'); // 'overview' | 'profile' | 'portfolio' | 'services' | 'packages' | 'customization' | 'calendar' | 'bookings'
   
-  // Profile state
   const [profileForm, setProfileForm] = useState({
     businessName: 'Royal Touch Weddings Studio',
     ownerName: 'Priya Sharma',
@@ -37,6 +43,35 @@ export const PlannerDashboard = () => {
     description: 'Premier wedding planning studio specializing in regal setups, celebrity weddings, palace mandaps, and high-production destination events.',
   });
   const [isEditingProfile, setIsEditingProfile] = useState(false);
+
+  React.useEffect(() => {
+    async function loadPlannerData() {
+      try {
+        const profile = await getPlannerProfile();
+        if (profile) {
+          setProfileForm({
+            businessName: profile.businessName || 'Royal Touch Weddings Studio',
+            ownerName: profile.ownerName || 'Priya Sharma',
+            email: profile.email || 'priya@royaltouchweddings.com',
+            phone: profile.phone || '+91 98765 43210',
+            gstNumber: profile.gstNumber || '27AAAAA0000A1Z5',
+            description: profile.description || 'Premier wedding planning studio specializing in regal setups, celebrity weddings, palace mandaps, and high-production destination events.',
+          });
+        }
+        const packages = await getPlannerPackages();
+        if (packages && packages.length > 0) setPackagesList(packages);
+
+        const services = await getPlannerServices();
+        if (services && services.length > 0) setServicesList(services);
+
+        const portfolio = await getPlannerPortfolio();
+        if (portfolio && portfolio.length > 0) setPortfolioItems(portfolio);
+      } catch (err) {
+        console.error("Error loading planner profile data:", err);
+      }
+    }
+    loadPlannerData();
+  }, []);
 
   // Portfolio state
   const [portfolioCategory, setPortfolioCategory] = useState('ALL');

@@ -1,57 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PlannerCard from './PlannerCard';
 import { HiChevronRight } from 'react-icons/hi2';
-
-const defaultPlanners = [
-  {
-    id: 1,
-    name: 'Royal Touch Weddings',
-    city: 'Mumbai',
-    experience: '8 Years Exp.',
-    rating: 4.9,
-    reviews: 128,
-    tagline: 'Crafting Royal Dreams into Reality',
-    price: '₹2,50,000',
-    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&auto=format&fit=crop',
-  },
-  {
-    id: 2,
-    name: 'Vedic Sutra Celebrations',
-    city: 'Udaipur',
-    experience: '12 Years Exp.',
-    rating: 4.8,
-    reviews: 95,
-    tagline: 'Traditional Elegance & Contemporary Charm',
-    price: '₹3,00,000',
-    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fit=crop',
-  },
-  {
-    id: 3,
-    name: 'Destination Forever Planners',
-    city: 'Goa',
-    experience: '6 Years Exp.',
-    rating: 4.9,
-    reviews: 110,
-    tagline: 'Exquisite Beach & Luxury Destination Weddings',
-    price: '₹2,80,000',
-    image: 'https://images.unsplash.com/photo-1544078751-58fee2d8a03b?w=800&auto=format&fit=crop',
-  },
-  {
-    id: 4,
-    name: 'Blissful Knot Events',
-    city: 'Jaipur',
-    experience: '10 Years Exp.',
-    rating: 4.7,
-    reviews: 84,
-    tagline: 'Palace Weddings & Grand Cultural Decor',
-    price: '₹3,50,000',
-    image: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&auto=format&fit=crop',
-  },
-];
+import { getPlanners } from '../../services/plannerService';
+import { SkeletonCard, ErrorAlert } from './StateFeedback';
 
 const FeaturedPlannersSection = ({ planners = [] }) => {
-  const displayPlanners = planners.length > 0 ? planners : defaultPlanners;
+  const [plannerList, setPlannerList] = useState(planners);
+  const [loading, setLoading] = useState(planners.length === 0);
+  const [error, setError] = useState(null);
+
+  const fetchPlannersData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getPlanners();
+      setPlannerList(data);
+    } catch (err) {
+      console.error("Failed to load featured planners:", err);
+      setError("Unable to load featured wedding planners.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (planners.length > 0) {
+      setPlannerList(planners);
+      setLoading(false);
+    } else {
+      fetchPlannersData();
+    }
+  }, [planners]);
 
   return (
     <section className="py-20 bg-white">
@@ -77,12 +57,27 @@ const FeaturedPlannersSection = ({ planners = [] }) => {
           </Link>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && !loading && <ErrorAlert message={error} onRetry={fetchPlannersData} />}
+
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {displayPlanners.map((planner) => (
-            <PlannerCard key={planner.id} planner={planner} />
-          ))}
-        </div>
+        {!loading && !error && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {plannerList.slice(0, 4).map((planner) => (
+              <PlannerCard key={planner.id} planner={planner} />
+            ))}
+          </div>
+        )}
 
       </div>
     </section>
