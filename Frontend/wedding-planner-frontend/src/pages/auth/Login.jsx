@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { FiMail, FiLock, FiArrowRight, FiSearch, FiStar, FiUser, FiBriefcase, FiShield } from "react-icons/fi";
+import { login as loginApi } from "../../services/authService";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -41,25 +42,8 @@ const Login = () => {
     setLoading(true);
 
     try {
-      let userRole = "USER";
-      let token = "mock-token";
-      let userName = loginData.email.split("@")[0] || "User";
-
-      // Detect role from credentials/backend response
-      const lowerEmail = loginData.email.toLowerCase();
-      if (lowerEmail.includes("planner")) {
-        userRole = "PLANNER";
-      } else if (lowerEmail.includes("admin")) {
-        userRole = "ADMIN";
-      } else {
-        userRole = "USER";
-      }
-
-      // Store auth session
-      localStorage.setItem("authToken", `${token}-${userRole.toLowerCase()}`);
-      localStorage.setItem("userRole", userRole);
-      localStorage.setItem("userName", userName);
-      localStorage.setItem("userEmail", loginData.email);
+      const res = await loginApi(loginData);
+      const userRole = res?.data?.role || localStorage.getItem("userRole") || "USER";
 
       // Automatic redirection based on authenticated role
       if (userRole === "PLANNER") {
@@ -71,7 +55,7 @@ const Login = () => {
       }
     } catch (err) {
       console.error("Login Error:", err);
-      setErrorMsg("Invalid credentials. Please check your email and password.");
+      setErrorMsg(err.message || "Invalid credentials. Please check your email and password.");
     } finally {
       setLoading(false);
     }

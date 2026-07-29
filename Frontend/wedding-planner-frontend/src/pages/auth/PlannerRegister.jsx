@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { FiUser, FiMail, FiPhone, FiLock, FiBriefcase, FiArrowRight, FiSearch, FiStar } from "react-icons/fi";
+import { registerPlanner } from "../../services/authService";
 
 const PlannerRegister = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const PlannerRegister = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.fullName || !formData.email || !formData.password || !formData.businessName) {
       setErrorMsg("Please fill in all required fields.");
@@ -32,15 +33,15 @@ const PlannerRegister = () => {
     }
 
     setLoading(true);
-    setTimeout(() => {
+    try {
+      await registerPlanner(formData);
+      navigate("/planner-dashboard");
+    } catch (err) {
+      console.error("Planner registration error:", err);
+      setErrorMsg(err.message || "Registration failed. Email may already be registered.");
+    } finally {
       setLoading(false);
-      navigate("/login", {
-        state: {
-          registeredEmail: formData.email,
-          message: "Planner registration successful! Please sign in with your email and password.",
-        },
-      });
-    }, 600);
+    }
   };
 
   return (

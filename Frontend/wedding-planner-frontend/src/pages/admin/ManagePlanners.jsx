@@ -27,7 +27,7 @@ export default function ManagePlanners() {
 
   // ================= FILTER PLANNERS =================
   const filtered = planners.filter((planner) => {
-    const name = planner.name || "";
+    const name = planner.businessName || planner.ownerName || planner.name || "";
     const email = planner.email || "";
 
     const matchSearch =

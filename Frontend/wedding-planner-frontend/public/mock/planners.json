@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "businessName": "Royal Touch Weddings Studio",
+    "ownerName": "Priya Sharma",
+    "city": "Mumbai",
+    "rating": 4.9,
+    "reviewsCount": 48,
+    "startingPrice": "₹1,50,000",
+    "experience": "8 Years",
+    "specialization": "Destination & Palace Weddings",
+    "avatarUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300",
+    "coverImageUrl": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800",
+    "description": "Premier wedding planning studio specializing in regal setups, celebrity weddings, palace mandaps, and high-production destination events."
+  },
+  {
+    "id": 2,
+    "businessName": "Destination Forever Planners",
+    "ownerName": "Aditya Verma",
+    "city": "Goa",
+    "rating": 4.9,
+    "reviewsCount": 62,
+    "startingPrice": "₹1,20,000",
+    "experience": "6 Years",
+    "specialization": "Beach Romance & Sunset Setup",
+    "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300",
+    "coverImageUrl": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800",
+    "description": "Exquisite beach destination weddings, sunset mandaps, and luxury coastal receptions in Goa and Kerala."
+  },
+  {
+    "id": 3,
+    "businessName": "Vedic Rituals & Royal Events",
+    "ownerName": "Rajesh Sharma",
+    "city": "Jaipur",
+    "rating": 4.8,
+    "reviewsCount": 35,
+    "startingPrice": "₹2,00,000",
+    "experience": "10 Years",
+    "specialization": "Traditional Rajasthani Royal Mandaps",
+    "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300",
+    "coverImageUrl": "https://images.unsplash.com/photo-1544077960-604201fe74bc?auto=format&fit=crop&w=800",
+    "description": "Heritage fort weddings, royal elephant processions, and authentic Marwari & Rajputana traditional ceremonies."
+  }
+]

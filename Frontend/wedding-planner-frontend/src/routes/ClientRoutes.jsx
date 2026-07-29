@@ -44,6 +44,7 @@ const ClientRoutes = (
       <Route path="bookings" element={<Bookings />} />
       <Route path="packages" element={<Packages />} />
       <Route path="payments" element={<Payments />} />
+      <Route path="suggestions" element={<Suggestions />} />
       <Route path="feedback" element={<Feedback />} />
       <Route path="profile" element={<Profile />} />
     </Route>

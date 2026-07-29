@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "paymentNumber": "PAY-9001",
+    "bookingNumber": "WPB-882910",
+    "clientName": "TEJASSAYANE067",
+    "amount": "₹2,29,680",
+    "type": "30% Advance Payment",
+    "paymentDate": "2026-07-28",
+    "gateway": "Razorpay",
+    "status": "Successful"
+  },
+  {
+    "id": 2,
+    "paymentNumber": "PAY-9002",
+    "bookingNumber": "WPB-882911",
+    "clientName": "Rahul Kulkarni",
+    "amount": "₹2,16,000",
+    "type": "30% Advance Payment",
+    "paymentDate": "2026-07-28",
+    "gateway": "UPI Auto-Pay",
+    "status": "Successful"
+  }
+]

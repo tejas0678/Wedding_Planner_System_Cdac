@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "fullName": "System Administrator",
+    "email": "admin@gmail.com",
+    "role": "ADMIN",
+    "status": "ACTIVE",
+    "phone": "+91 90000 00000"
+  },
+  {
+    "id": 2,
+    "fullName": "TEJASSAYANE067",
+    "email": "client@gmail.com",
+    "role": "USER",
+    "status": "ACTIVE",
+    "phone": "+91 98765 43210"
+  },
+  {
+    "id": 3,
+    "fullName": "Rahul Kulkarni",
+    "email": "rahul.kulkarni@gmail.com",
+    "role": "USER",
+    "status": "ACTIVE",
+    "phone": "+91 91234 56789"
+  },
+  {
+    "id": 6,
+    "fullName": "shooter",
+    "email": "shooter@gmail.com",
+    "role": "USER",
+    "status": "ACTIVE",
+    "phone": "+91 99999 88888"
+  }
+]

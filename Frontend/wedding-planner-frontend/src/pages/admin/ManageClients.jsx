@@ -25,7 +25,7 @@ export default function ManageClients() {
   };
 
   const filteredClients = clients.filter((client) => {
-    const name = client.name || "";
+    const name = client.fullName || client.name || "";
     const email = client.email || "";
 
     const matchesSearch =
@@ -129,7 +129,7 @@ export default function ManageClients() {
                       {client.id}
                     </td>
                     <td className="px-6 py-4 font-bold text-gray-900">
-                      {client.name}
+                      {client.fullName || client.name}
                     </td>
                     <td className="px-6 py-4 font-light text-gray-600">
                       {client.email}

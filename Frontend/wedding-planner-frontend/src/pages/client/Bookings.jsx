@@ -1,40 +1,120 @@
-import { useState, useEffect } from 'react'
-import BookingCard from '../../components/client/BookingsCard'
-import { useAppData } from '../../context/client/AppDataContext'
+import { useState, useEffect } from 'react';
+import { getBookingHistory, removeBooking } from '../../services/bookingService';
+import { SkeletonCard, EmptyState, ErrorAlert } from '../../components/common/StateFeedback';
+import { FiTrash2 } from 'react-icons/fi';
 
 export default function Bookings() {
-  const { bookings } = useAppData()
-  const [loading, setLoading] = useState(true)
+  const [bookingList, setBookingList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [removingId, setRemovingId] = useState(null);
 
-  // Bookings come from shared AppDataContext (populated once booking creation
-  // and/or a real API integration exists). Simulate the initial load only.
+  const fetchBookings = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getBookingHistory();
+      setBookingList(data || []);
+    } catch (err) {
+      console.error("Error loading booking history:", err);
+      setError("Unable to load booking history.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    setLoading(false)
-  }, [])
+    fetchBookings();
+  }, []);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-gray-400">Loading bookings...</div>
-      </div>
-    )
-  }
+  const handleRemove = async (bookingId, packageName) => {
+    if (!window.confirm(`Are you sure you want to remove the pending booking for "${packageName}"?`)) {
+      return;
+    }
+
+    try {
+      setRemovingId(bookingId);
+      await removeBooking(bookingId);
+      setBookingList((prev) => prev.filter((b) => b.id !== bookingId && b.bookingNumber !== bookingId));
+    } catch (err) {
+      console.error("Error removing booking:", err);
+      alert("Failed to remove booking request. Please try again.");
+    } finally {
+      setRemovingId(null);
+    }
+  };
 
   return (
     <div>
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">My Bookings</h2>
+      <h2 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 mb-6">
+        Booking History
+      </h2>
 
-      {bookings.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 flex items-center justify-center">
-          <p className="text-sm text-gray-400">No bookings found.</p>
+      {loading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {bookings.map((booking) => (
-            <BookingCard key={booking.id} booking={booking} />
-          ))}
+      )}
+
+      {error && !loading && <ErrorAlert message={error} onRetry={fetchBookings} />}
+
+      {!loading && !error && bookingList.length === 0 && (
+        <EmptyState title="No Bookings Found" message="You have no active or pending wedding bookings." />
+      )}
+
+      {!loading && !error && bookingList.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {bookingList.map((b) => {
+            const bId = b.id || b.bookingNumber;
+            const isPending = (b.status || '').toLowerCase() === 'pending';
+
+            return (
+              <div key={bId} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm space-y-4 flex flex-col justify-between hover:shadow-md transition">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#EC3664] bg-rose-50 px-3 py-1 rounded-full uppercase">
+                      {b.bookingNumber || b.id}
+                    </span>
+                    <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${
+                      isPending ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700'
+                    }`}>
+                      {b.status || 'CONFIRMED'}
+                    </span>
+                  </div>
+
+                  <div>
+                    <h3 className="font-serif text-lg font-bold text-gray-900">{b.packageName || b.package}</h3>
+                    <p className="text-xs text-gray-500 mt-1">{b.plannerName || b.planner}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">{b.venue || b.location}</p>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
+                  <div>
+                    <span className="text-xs font-bold text-gray-900 block">{b.amount}</span>
+                    <span className="text-[10px] font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full inline-block mt-1">
+                      {b.paymentStatus || 'Pending'}
+                    </span>
+                  </div>
+
+                  {isPending && (
+                    <button
+                      onClick={() => handleRemove(bId, b.packageName || b.package)}
+                      disabled={removingId === bId}
+                      className="bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <FiTrash2 className="w-3.5 h-3.5" />
+                      <span>{removingId === bId ? 'Removing...' : 'Remove'}</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
-  )
+  );
 }

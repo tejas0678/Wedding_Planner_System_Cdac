@@ -8,6 +8,8 @@ import PlannerRegister from './../pages/auth/PlannerRegister';
 import FindPlanners from "../pages/home/FindPlanners";
 import PublicPackages from "../pages/home/PublicPackages";
 
+import ForgotPassword from "../pages/auth/ForgotPassword";
+
 const AuthRoutes = (
   <>
     <Route path="/" element={<Home />} />
@@ -15,6 +17,7 @@ const AuthRoutes = (
     <Route path="/user-register" element={<UserRegister />} />
     <Route path="/planner-register" element={<PlannerRegister/>}/>
     <Route path="/login" element={<Login/>} />
+    <Route path="/forgot-password" element={<ForgotPassword />} />
     <Route path="/find-planners" element={<FindPlanners />} />
     <Route path="/packages" element={<PublicPackages />} />
     <Route path="/about" element={<About/>}/>
