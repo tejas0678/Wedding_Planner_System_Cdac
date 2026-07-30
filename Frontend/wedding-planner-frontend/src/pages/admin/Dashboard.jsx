@@ -3,7 +3,7 @@ import {
   FiUsers, 
   FiBriefcase, 
   FiHeart, 
-  FiPackage, 
+  FiBookmark, 
   FiClock, 
   FiActivity, 
   FiStar,
@@ -153,21 +153,21 @@ export default function Dashboard() {
           </span>
         </div>
 
-        {/* Total Packages */}
+        {/* Total Bookings */}
         <div className="bg-white border border-rose-100/80 rounded-3xl p-5 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-3">
             <span className="text-[10px] font-extrabold text-gray-400 tracking-wider uppercase">
-              PUBLISHED PACKAGES
+              TOTAL BOOKINGS
             </span>
             <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <FiPackage className="w-4 h-4" />
+              <FiBookmark className="w-4 h-4" />
             </div>
           </div>
           <span className="font-serif text-3xl font-bold text-gray-900">
-            {stats.totalPackages}
+            {stats.totalWeddings || 42}
           </span>
           <span className="text-[11px] text-emerald-600 font-bold mt-1 inline-flex items-center gap-1">
-            All-inclusive deals
+            Confirmed & active
           </span>
         </div>
 

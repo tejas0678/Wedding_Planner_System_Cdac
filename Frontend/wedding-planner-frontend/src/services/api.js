@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8081/api';
+const BASE_URL = 'http://localhost:8082';
 
 async function request(endpoint, options = {}) {
   const token = localStorage.getItem('authToken');

@@ -35,7 +35,7 @@ const PlannerRegister = () => {
     setLoading(true);
     try {
       await registerPlanner(formData);
-      navigate("/planner-dashboard");
+      navigate("/login", { state: { registeredEmail: formData.email, message: "Planner registration successful! Please log in with your credentials." } });
     } catch (err) {
       console.error("Planner registration error:", err);
       setErrorMsg(err.message || "Registration failed. Email may already be registered.");

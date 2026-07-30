@@ -5,7 +5,7 @@ import {
   FiBarChart2, 
   FiUsers, 
   FiBriefcase, 
-  FiPackage, 
+  FiBookmark, 
   FiCreditCard, 
   FiMessageSquare, 
   FiLogOut,
@@ -29,9 +29,9 @@ const navItems = [
     icon: FiBriefcase,
   },
   {
-    path: "/admin/packages",
-    label: "Manage Packages",
-    icon: FiPackage,
+    path: "/admin/bookings",
+    label: "Booking Details",
+    icon: FiBookmark,
   },
   {
     path: "/admin/payments",

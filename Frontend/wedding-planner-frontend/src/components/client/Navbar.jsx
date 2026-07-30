@@ -17,7 +17,7 @@ export default function Navbar() {
   return (
     <header className="bg-white border-b border-gray-100 px-4 lg:px-8 py-3.5 sticky top-0 z-50 shadow-2xs">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        
+
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 rounded-full bg-[#EC3664] flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-105">
@@ -74,7 +74,7 @@ export default function Navbar() {
               T
             </div>
             <span className="text-xs font-bold text-gray-800 tracking-wide uppercase">
-              TEJASSAYANE067
+              Logout
             </span>
             <button
               onClick={handleLogout}

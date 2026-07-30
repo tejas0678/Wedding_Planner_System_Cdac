@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { FiMail, FiLock, FiKey, FiArrowLeft, FiCheckCircle, FiShield } from "react-icons/fi";
-import { forgotPassword as forgotPasswordApi, resetPassword as resetPasswordApi } from "../../services/authService";
+import { forgotPassword as forgotPasswordApi, verifyOtp as verifyOtpApi, resetPassword as resetPasswordApi } from "../../services/authService";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -25,28 +25,39 @@ const ForgotPassword = () => {
 
     try {
       await forgotPasswordApi(email);
-      setMsg({ type: "success", text: `OTP verification code sent to ${email}!` });
+      setMsg({ type: "success", text: `6-digit OTP sent to ${email}. Valid for 5 minutes.` });
       setStep(2);
     } catch (err) {
       console.error(err);
-      setMsg({ type: "error", text: "Failed to send reset code. Please check your email." });
+      setMsg({ type: "error", text: err.message || "Failed to send reset code. Please check your email." });
     } finally {
       setLoading(false);
     }
   };
 
   // STEP 2: Verify OTP
-  const handleVerifyOtp = (e) => {
+  const handleVerifyOtp = async (e) => {
     e.preventDefault();
     if (!otp) return;
 
-    if (otp.trim().length < 4) {
-      setMsg({ type: "error", text: "Please enter a valid OTP code." });
+    if (otp.trim().length < 6) {
+      setMsg({ type: "error", text: "Please enter the complete 6-digit OTP code." });
       return;
     }
 
-    setMsg({ type: "success", text: "OTP Verified Successfully! Enter your new password." });
-    setStep(3);
+    setLoading(true);
+    setMsg({ type: "", text: "" });
+
+    try {
+      await verifyOtpApi(email, otp);
+      setMsg({ type: "success", text: "OTP Verified Successfully! Enter your new password." });
+      setStep(3);
+    } catch (err) {
+      console.error(err);
+      setMsg({ type: "error", text: err.message || "Invalid or expired OTP. Please check and try again." });
+    } finally {
+      setLoading(false);
+    }
   };
 
   // STEP 3: Reset Password

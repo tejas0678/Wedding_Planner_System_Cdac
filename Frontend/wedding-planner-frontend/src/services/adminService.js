@@ -78,6 +78,21 @@ export async function rejectPlanner(id) {
   });
 }
 
+export async function getBookings() {
+  try {
+    const res = await api.get('/admin/bookings');
+    if (res && res.data && res.data.length > 0) return res.data;
+  } catch (err) {
+    console.warn("Backend unavailable, fetching mock bookings for admin:", err);
+  }
+  return new Promise((resolve) => {
+    setTimeout(async () => {
+      const data = await fetchMockData('bookings.json');
+      resolve(data);
+    }, 400);
+  });
+}
+
 export async function getPackages() {
   try {
     const res = await api.get('/packages');
