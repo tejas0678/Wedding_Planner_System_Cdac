@@ -34,7 +34,7 @@ const UserRegister = () => {
     setLoading(true);
     try {
       await registerClient(formData);
-      navigate("/client/dashboard");
+      navigate("/login", { state: { registeredEmail: formData.email, message: "Registration successful! Please log in with your credentials." } });
     } catch (err) {
       console.error("Registration error:", err);
       setErrorMsg(err.message || "Registration failed. Email may already be registered.");

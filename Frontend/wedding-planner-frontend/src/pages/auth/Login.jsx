@@ -179,7 +179,7 @@ const Login = () => {
               {/* Admin Credentials */}
               <button
                 type="button"
-                onClick={() => handleFillCredentials("admin@gmail.com", "123456")}
+                onClick={() => handleFillCredentials("admin@royalbliss.com", "admin123")}
                 className="w-full bg-white hover:bg-rose-50/60 border border-rose-100 rounded-xl p-2.5 text-left flex items-center justify-between transition cursor-pointer group"
               >
                 <div className="flex items-center gap-2">
@@ -188,7 +188,7 @@ const Login = () => {
                   </span>
                   <div>
                     <span className="text-xs font-bold text-gray-900 block leading-none">Admin Account</span>
-                    <span className="text-[10px] text-gray-500 font-light">admin@gmail.com</span>
+                    <span className="text-[10px] text-gray-500 font-light">admin@royalbliss.com / admin123</span>
                   </div>
                 </div>
                 <span className="text-[10px] font-bold text-[#EC3664] group-hover:underline">Use</span>
