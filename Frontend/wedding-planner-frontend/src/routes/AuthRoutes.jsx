@@ -20,6 +20,7 @@ const AuthRoutes = (
     <Route path="/forgot-password" element={<ForgotPassword />} />
     <Route path="/find-planners" element={<FindPlanners />} />
     <Route path="/packages" element={<PublicPackages />} />
+    <Route path="/planner/:plannerId/packages" element={<PublicPackages />} />
     <Route path="/about" element={<About/>}/>
     <Route path="/contact" element={<Contact />}/>
   </>
