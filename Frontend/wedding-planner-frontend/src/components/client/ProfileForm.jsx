@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { FiSave, FiUser, FiMail, FiPhone } from 'react-icons/fi';
-import { HiSparkles } from 'react-icons/hi2';
+import ImageUpload from '../common/ImageUpload';
 
 export default function ProfileForm({ userData, onUpdate }) {
   const [form, setForm] = useState({
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400',
-    fullName: 'TEJASSAYANE067',
-    partnerName: 'Meera Kapoor',
-    email: 'tejassayane067@gmail.com',
-    phone: '+91 98765 43210',
-    emergencyPhone: '+91 98765 99999',
+    avatarUrl: '',
+    avatarPublicId: '',
+    fullName: '',
+    partnerName: '',
+    email: '',
+    phone: '',
+    emergencyPhone: '',
   });
 
   useEffect(() => {
     if (userData) {
-      setForm((prev) => ({
-        ...prev,
-        fullName: userData.fullName || userData.name || prev.fullName,
-        partnerName: userData.partnerName || prev.partnerName,
-        email: userData.email || prev.email,
-        phone: userData.phone || prev.phone,
-        emergencyPhone: userData.emergencyPhone || prev.emergencyPhone,
-        avatarUrl: userData.avatarUrl || prev.avatarUrl,
-      }));
+      setForm({
+        fullName: userData.fullName || userData.name || '',
+        partnerName: userData.partnerName || '',
+        email: userData.email || '',
+        phone: userData.phone || '',
+        emergencyPhone: userData.emergencyPhone || '',
+        avatarUrl: userData.avatarUrl || '',
+        avatarPublicId: userData.avatarPublicId || '',
+      });
     }
   }, [userData]);
 
@@ -52,8 +53,21 @@ export default function ProfileForm({ userData, onUpdate }) {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        
-        {/* Section 2: Personal & Contact Details */}
+
+        {/* Section: Profile Photo */}
+        <div>
+          <h3 className="font-serif text-xl font-bold text-gray-900 mb-6">
+            Profile Photo
+          </h3>
+          <ImageUpload
+            label="Profile Photo"
+            folder="wedding-planner/client/profile"
+            value={{ imageUrl: form.avatarUrl, publicId: form.avatarPublicId }}
+            onChange={({ imageUrl, publicId }) => setForm((prev) => ({ ...prev, avatarUrl: imageUrl, avatarPublicId: publicId }))}
+          />
+        </div>
+
+        {/* Section: Personal & Contact Details */}
         <div>
           <h3 className="font-serif text-xl font-bold text-gray-900 mb-6">
             Personal & Contact Details
@@ -71,6 +85,7 @@ export default function ProfileForm({ userData, onUpdate }) {
                 name="fullName"
                 value={form.fullName}
                 onChange={handleChange}
+                placeholder="Enter full name"
                 className="w-full bg-[#FFF9FA] border border-rose-100 rounded-2xl px-4 py-3.5 text-sm font-semibold text-gray-900 focus:outline-none focus:border-[#EC3664] focus:bg-white transition"
               />
             </div>
@@ -85,6 +100,7 @@ export default function ProfileForm({ userData, onUpdate }) {
                 name="partnerName"
                 value={form.partnerName}
                 onChange={handleChange}
+                placeholder="Not provided"
                 className="w-full bg-[#FFF9FA] border border-rose-100 rounded-2xl px-4 py-3.5 text-sm font-semibold text-gray-900 focus:outline-none focus:border-[#EC3664] focus:bg-white transition"
               />
             </div>
@@ -99,7 +115,9 @@ export default function ProfileForm({ userData, onUpdate }) {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                className="w-full bg-[#FFF9FA] border border-rose-100 rounded-2xl px-4 py-3.5 text-sm font-semibold text-gray-900 focus:outline-none focus:border-[#EC3664] focus:bg-white transition"
+                placeholder="Enter email address"
+                readOnly
+                className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3.5 text-sm font-semibold text-gray-600 focus:outline-none cursor-not-allowed"
               />
             </div>
 
@@ -113,6 +131,7 @@ export default function ProfileForm({ userData, onUpdate }) {
                 name="phone"
                 value={form.phone}
                 onChange={handleChange}
+                placeholder="Enter phone number"
                 className="w-full bg-[#FFF9FA] border border-rose-100 rounded-2xl px-4 py-3.5 text-sm font-semibold text-gray-900 focus:outline-none focus:border-[#EC3664] focus:bg-white transition"
               />
             </div>
@@ -127,6 +146,7 @@ export default function ProfileForm({ userData, onUpdate }) {
                 name="emergencyPhone"
                 value={form.emergencyPhone}
                 onChange={handleChange}
+                placeholder="Not provided"
                 className="w-full bg-[#FFF9FA] border border-rose-100 rounded-2xl px-4 py-3.5 text-sm font-semibold text-gray-900 focus:outline-none focus:border-[#EC3664] focus:bg-white transition"
               />
             </div>

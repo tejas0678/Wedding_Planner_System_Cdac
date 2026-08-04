@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DashboardLayout from './DashboardLayout';
 import { Stat } from './../../components/planner/common/Stat';
 import { Status } from './../../components/planner/common/Status';
-import { getPayments } from '../../services/paymentService';
+import { getPlannerPayments } from '../../services/paymentService';
 import { LoadingSpinner, EmptyState, ErrorAlert } from '../../components/common/StateFeedback';
 
 export const PlannerPayments = () => {
@@ -14,7 +14,7 @@ export const PlannerPayments = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await getPayments();
+      const data = await getPlannerPayments();
       setPaymentsList(data || []);
     } catch (err) {
       console.error("Error loading planner payments:", err);
@@ -39,7 +39,11 @@ export const PlannerPayments = () => {
       {!loading && !error && (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <Stat icon="💰" label="Total Payments Received" value="₹4.45 Lakhs" title="₹4,45,680" />
+            <Stat
+              icon="💰"
+              label="Total Payments Received"
+              value={`₹${paymentsList.filter((p) => p.status === 'Paid').reduce((sum, p) => sum + Number(p.amount || 0), 0).toLocaleString('en-IN')}`}
+            />
             <Stat icon="💳" label="Transactions Count" value={paymentsList.length} />
           </div>
 
@@ -48,14 +52,16 @@ export const PlannerPayments = () => {
             {paymentsList.length > 0 ? (
               <div className="space-y-3">
                 {paymentsList.map((p) => (
-                  <div key={p.id || p.paymentNumber} className="flex flex-wrap justify-between items-center p-3.5 border border-gray-100 rounded-xl hover:bg-gray-50 transition">
+                  <div key={p.paymentId} className="flex flex-wrap justify-between items-center p-3.5 border border-gray-100 rounded-xl hover:bg-gray-50 transition">
                     <div>
-                      <p className="font-mono font-bold text-gray-900">{p.paymentNumber || `PAY-${p.id}`}</p>
-                      <p className="text-sm font-semibold text-gray-700">{p.clientName || 'TEJASSAYANE067'}</p>
-                      <p className="text-xs text-gray-400 mt-0.5">{p.type || '30% Advance Payment'} • {p.paymentDate || '2026-07-28'}</p>
-                      <p className="text-sm font-bold text-pink-600 mt-1">{p.amount}</p>
+                      <p className="font-mono font-bold text-gray-900">PAY-{p.paymentId} • {p.bookingNumber}</p>
+                      <p className="text-sm font-semibold text-gray-700">{p.clientName || 'Client'}</p>
+                      <p className="text-xs text-gray-400 mt-0.5">
+                        {p.packageName || 'Booking Payment'} • {p.transactionDate ? new Date(p.transactionDate).toLocaleDateString('en-IN') : new Date(p.createdAt).toLocaleDateString('en-IN')}
+                      </p>
+                      <p className="text-sm font-bold text-pink-600 mt-1">₹{Number(p.amount || 0).toLocaleString('en-IN')}</p>
                     </div>
-                    <Status status={p.status || 'Successful'} />
+                    <Status status={p.status} />
                   </div>
                 ))}
               </div>

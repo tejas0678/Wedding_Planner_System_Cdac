@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import PaymentForm from '../../components/client/PaymentForm';
 import { MdHistory } from 'react-icons/md';
-import { getPayments } from '../../services/paymentService';
+import { getClientPayments } from '../../services/paymentService';
 import { LoadingSpinner, EmptyState, ErrorAlert } from '../../components/common/StateFeedback';
 
 export default function Payments() {
@@ -13,7 +13,7 @@ export default function Payments() {
     try {
       setLoading(true);
       setError(null);
-      const data = await getPayments();
+      const data = await getClientPayments();
       setPaymentsList(data || []);
     } catch (err) {
       console.error("Error loading payment history:", err);
@@ -27,19 +27,11 @@ export default function Payments() {
     fetchPaymentHistory();
   }, []);
 
-  const handlePaymentSuccess = (paymentData) => {
-    setPaymentsList((prev) => [
-      {
-        id: Date.now(),
-        paymentNumber: `PAY-${Math.floor(1000 + Math.random() * 9000)}`,
-        bookingNumber: paymentData.wedding || "WPB-882910",
-        amount: `₹${paymentData.amount}`,
-        type: "Online Payment",
-        paymentDate: new Date().toLocaleDateString(),
-        status: "Successful"
-      },
-      ...prev,
-    ]);
+  // Real payments only happen via the Razorpay "Pay Now" button on My Bookings; this form
+  // is a placeholder that doesn't call any API, so its "success" must not fabricate a row
+  // in what is otherwise a real, gateway-verified payment history.
+  const handlePaymentSuccess = () => {
+    alert('To make a payment, use the "Pay Now" button on the relevant booking under My Bookings.');
   };
 
   return (
@@ -68,17 +60,19 @@ export default function Payments() {
           {!loading && !error && paymentsList.length > 0 && (
             <div className="space-y-4">
               {paymentsList.map((payment) => (
-                <div key={payment.id || payment.paymentNumber} className="flex items-center justify-between border-b border-gray-100 pb-3 last:border-0">
+                <div key={payment.paymentId} className="flex items-center justify-between border-b border-gray-100 pb-3 last:border-0">
                   <div>
                     <p className="text-sm font-semibold text-gray-800">
-                      {payment.paymentNumber || `PAY-${payment.id}`} • {payment.bookingNumber || `Booking #${payment.bookingId}`}
+                      PAY-{payment.paymentId} • {payment.bookingNumber || `Booking #${payment.bookingId}`}
                     </p>
-                    <p className="text-xs text-gray-400 mt-0.5">{payment.type || "30% Advance"} • {payment.paymentDate || "2026-07-28"}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      {payment.packageName || 'Booking Payment'} • {payment.transactionDate ? new Date(payment.transactionDate).toLocaleDateString('en-IN') : new Date(payment.createdAt).toLocaleDateString('en-IN')}
+                    </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-[#EC0B72]">{payment.amount}</p>
-                    <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
-                      {payment.status || "Successful"}
+                    <p className="text-sm font-bold text-[#EC0B72]">₹{Number(payment.amount || 0).toLocaleString('en-IN')}</p>
+                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${payment.status === 'Paid' ? 'text-emerald-600 bg-emerald-50' : payment.status === 'Failed' ? 'text-rose-600 bg-rose-50' : 'text-amber-600 bg-amber-50'}`}>
+                      {payment.status}
                     </span>
                   </div>
                 </div>

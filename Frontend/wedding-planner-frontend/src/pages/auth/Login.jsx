@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { FiMail, FiLock, FiArrowRight, FiSearch, FiStar, FiUser, FiBriefcase, FiShield } from "react-icons/fi";
-import { login as loginApi } from "../../services/authService";
+import { login as loginApi, logout as clearAuthData } from "../../services/authService";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -55,6 +55,9 @@ const Login = () => {
       }
     } catch (err) {
       console.error("Login Error:", err);
+      // Any login failure (including a deactivated account) must not leave a stale
+      // token behind from a previous session.
+      clearAuthData();
       setErrorMsg(err.message || "Invalid credentials. Please check your email and password.");
     } finally {
       setLoading(false);

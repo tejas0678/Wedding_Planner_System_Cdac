@@ -35,7 +35,7 @@ export default function Bookings() {
     try {
       setRemovingId(bookingId);
       await removeBooking(bookingId);
-      setBookingList((prev) => prev.filter((b) => b.id !== bookingId && b.bookingNumber !== bookingId));
+      setBookingList((prev) => prev.filter((b) => b.id !== bookingId && b.bookingId !== bookingId));
     } catch (err) {
       console.error("Error removing booking:", err);
       alert("Failed to remove booking request. Please try again.");
@@ -68,19 +68,40 @@ export default function Bookings() {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {bookingList.map((b) => {
             const bId = b.id || b.bookingNumber;
-            const isPending = (b.status || '').toLowerCase() === 'pending';
+            const rawStatus = (b.bookingStatus || b.status || 'PENDING').toUpperCase();
+            const isPending = rawStatus === 'PENDING';
+
+            let statusBadge = {
+              label: '🟡 Pending Approval',
+              style: 'bg-amber-100 text-amber-800 border border-amber-200'
+            };
+
+            if (rawStatus === 'CONFIRMED' || rawStatus === 'ACCEPTED') {
+              statusBadge = {
+                label: '🟢 Confirmed',
+                style: 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+              };
+            } else if (rawStatus === 'REJECTED') {
+              statusBadge = {
+                label: '🔴 Rejected',
+                style: 'bg-rose-100 text-rose-800 border border-rose-200'
+              };
+            } else if (rawStatus === 'COMPLETED') {
+              statusBadge = {
+                label: '🔵 Completed',
+                style: 'bg-blue-100 text-blue-800 border border-blue-200'
+              };
+            }
 
             return (
               <div key={bId} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm space-y-4 flex flex-col justify-between hover:shadow-md transition">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-[#EC3664] bg-rose-50 px-3 py-1 rounded-full uppercase">
-                      {b.bookingNumber || b.id}
+                      {b.bookingId || b.id}
                     </span>
-                    <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${
-                      isPending ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700'
-                    }`}>
-                      {b.status || 'CONFIRMED'}
+                    <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${statusBadge.style}`}>
+                      {statusBadge.label}
                     </span>
                   </div>
 

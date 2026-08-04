@@ -2,8 +2,10 @@ const BASE_URL = 'http://localhost:8082';
 
 async function request(endpoint, options = {}) {
   const token = localStorage.getItem('authToken');
+  const isFormData = options.body instanceof FormData;
   const headers = {
-    'Content-Type': 'application/json',
+    // FormData sets its own multipart boundary; forcing JSON here would break uploads.
+    ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
     ...(options.headers || {}),
   };
 
@@ -38,7 +40,10 @@ async function request(endpoint, options = {}) {
 const api = {
   get: (endpoint, headers) => request(endpoint, { method: 'GET', headers }),
   post: (endpoint, body, headers) => request(endpoint, { method: 'POST', body: JSON.stringify(body), headers }),
+  // For multipart/form-data uploads (e.g. image uploads) — body must be a FormData instance.
+  postForm: (endpoint, formData, headers) => request(endpoint, { method: 'POST', body: formData, headers }),
   put: (endpoint, body, headers) => request(endpoint, { method: 'PUT', body: body ? JSON.stringify(body) : undefined, headers }),
+  patch: (endpoint, body, headers) => request(endpoint, { method: 'PATCH', body: body ? JSON.stringify(body) : undefined, headers }),
   delete: (endpoint, headers) => request(endpoint, { method: 'DELETE', headers }),
 };
 

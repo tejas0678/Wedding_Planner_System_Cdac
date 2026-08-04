@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "wedding-planner-auth-collection-id",
+		"name": "Wedding Planner Auth Service APIs",
+		"description": "Complete Postman Collection for testing Spring Boot Authentication & Email OTP REST APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/auth/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"auth",
+						"health"
+					]
+				},
+				"description": "Verifies that the Spring Boot Auth Service is active and running."
+			},
+			"response": []
+		},
+		{
+			"name": "2. Register Client (Role: USER)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fullName\": \"Ananya Sharma\",\n  \"email\": \"ananya.client@gmail.com\",\n  \"password\": \"password123\",\n  \"phone\": \"9876543210\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/auth/register/client",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"auth",
+						"register",
+						"client"
+					]
+				},
+				"description": "Registers a new Client user in MySQL database."
+			},
+			"response": []
+		},
+		{
+			"name": "3. Register Planner (Role: PLANNER)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fullName\": \"Rajesh Mehta\",\n  \"businessName\": \"Royal Heritage Weddings\",\n  \"email\": \"rajesh.planner@gmail.com\",\n  \"password\": \"password123\",\n  \"phone\": \"9876543211\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/auth/register/planner",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"auth",
+						"register",
+						"planner"
+					]
+				},
+				"description": "Registers a new Wedding Planner studio in MySQL database."
+			},
+			"response": []
+		},
+		{
+			"name": "4. User / Planner Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"ananya.client@gmail.com\",\n  \"password\": \"otpverified123\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"auth",
+						"login"
+					]
+				},
+				"description": "Authenticates user against BCrypt password hash and returns JWT Bearer token."
+			},
+			"response": []
+		},
+		{
+			"name": "5. Request Forgot Password OTP (5 Min Expiry)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"ananya.client@gmail.com\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/auth/forgot-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"auth",
+						"forgot-password"
+					]
+				},
+				"description": "Generates a secure 6-digit OTP stored with a 5-minute expiration time and sends it via JavaMailSender."
+			},
+			"response": []
+		},
+		{
+			"name": "6. Verify 6-Digit OTP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"ananya.client@gmail.com\",\n  \"otp\": \"123456\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/auth/verify-otp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"auth",
+						"verify-otp"
+					]
+				},
+				"description": "Verifies that the entered 6-digit OTP code matches and has not expired."
+			},
+			"response": []
+		},
+		{
+			"name": "7. Reset Password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"ananya.client@gmail.com\",\n  \"otp\": \"123456\",\n  \"newPassword\": \"otpverified123\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/auth/reset-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"auth",
+						"reset-password"
+					]
+				},
+				"description": "Updates BCrypt password hash and immediately invalidates/deletes the OTP."
+			},
+			"response": []
+		}
+	]
+}
