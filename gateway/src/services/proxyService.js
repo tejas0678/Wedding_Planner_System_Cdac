@@ -27,7 +27,24 @@ const dotnetProxy = createProxyMiddleware({
   }
 });
 
+const chatbotProxy = createProxyMiddleware({
+  target: config.chatbotBackendUrl,
+  changeOrigin: true,
+  pathRewrite: {
+    '^/chat': '' // remove /chat prefix when routing to chatbot service
+  },
+  logLevel: 'debug',
+  onError: (err, req, res) => {
+    console.error('[GATEWAY PROXY ERROR -> CHATBOT SERVICE]:', err.message);
+    res.status(502).json({
+      success: false,
+      message: 'Chatbot Service Unavailable (Port 8083)'
+    });
+  }
+});
+
 module.exports = {
   springProxy,
-  dotnetProxy
+  dotnetProxy,
+  chatbotProxy
 };

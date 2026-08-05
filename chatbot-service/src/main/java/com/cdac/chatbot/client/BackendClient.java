@@ -30,15 +30,15 @@ public class BackendClient {
     private final WebClient backendWebClient;
 
     public List<PlannerDTO> getPlanners() {
-        return fetch("/api/chat/planners", new ParameterizedTypeReference<>() {});
+        return fetch("/api/planners", new ParameterizedTypeReference<>() {});
     }
 
     public List<PackageDTO> getPackages() {
-        return fetch("/api/chat/packages", new ParameterizedTypeReference<>() {});
+        return fetch("/api/packages", new ParameterizedTypeReference<>() {});
     }
 
     public List<FaqDTO> getFaqs() {
-        return fetch("/api/chat/faqs", new ParameterizedTypeReference<>() {});
+        return fetch("/api/faqs", new ParameterizedTypeReference<>() {}); // Returns empty list if endpoint missing
     }
 
     private <T> List<T> fetch(String path, ParameterizedTypeReference<BackendApiResponse<List<T>>> type) {

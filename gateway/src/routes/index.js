@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { springProxy, dotnetProxy } = require('../services/proxyService');
+const { springProxy, dotnetProxy, chatbotProxy } = require('../services/proxyService');
 
 // Spring Boot Routes (Port 8081)
 router.use('/auth', springProxy);
@@ -30,5 +30,8 @@ router.use('/admin/payments', springProxy);
 router.use('/api/feedback', dotnetProxy);
 router.use('/reviews', dotnetProxy);
 router.use('/admin/reports/feedback', dotnetProxy);
+
+// Chatbot Service Routes (Port 8083)
+router.use('/chat', chatbotProxy);
 
 module.exports = router;
