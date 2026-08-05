@@ -1,139 +1,119 @@
 import api from './api';
 
-const fetchMockData = async (fileName) => {
-  const res = await fetch(`/mock/${fileName}`);
-  return await res.json();
-};
-
 export async function getDashboardStats() {
-  try {
-    const res = await api.get('/admin/dashboard/stats');
-    if (res && res.data) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock admin dashboard stats:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('adminDashboard.json');
-      resolve(data);
-    }, 400);
-  });
+  const res = await api.get('/admin/dashboard/stats');
+  return res && res.data ? res.data : res;
 }
 
 export async function getClients() {
-  try {
-    const res = await api.get('/admin/clients');
-    if (res && res.data && res.data.length > 0) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock clients:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('clients.json');
-      resolve(data);
-    }, 400);
-  });
+  const res = await api.get('/admin/clients');
+  return res && res.data ? res.data : [];
+}
+
+export async function getClientDetails(id) {
+  const res = await api.get(`/api/admin/clients/${id}/details`);
+  return res && res.data ? res.data : null;
+}
+
+export async function toggleClientStatus(id, enabled) {
+  const res = await api.put(`/api/admin/users/${id}/toggle-status?enabled=${enabled}`);
+  return res && res.data ? res.data : res;
 }
 
 export async function getPlanners() {
-  try {
-    const res = await api.get('/admin/planners');
-    if (res && res.data && res.data.length > 0) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock planners:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('planners.json');
-      resolve(data);
-    }, 400);
-  });
+  const res = await api.get('/admin/planners');
+  return res && res.data ? res.data : [];
+}
+
+export async function getPlannerDetails(id) {
+  const res = await api.get(`/api/admin/planners/${id}/details`);
+  return res && res.data ? res.data : null;
 }
 
 export async function approvePlanner(id) {
-  try {
-    const res = await api.put(`/admin/planners/${id}/approve`);
-    if (res && res.data) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, simulating planner approval:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ success: true, id, status: 'APPROVED' });
-    }, 400);
-  });
+  const res = await api.put(`/admin/planners/${id}/approve`);
+  return res && res.data ? res.data : res;
 }
 
 export async function rejectPlanner(id) {
-  try {
-    const res = await api.put(`/admin/planners/${id}/reject`);
-    if (res && res.data) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, simulating planner rejection:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ success: true, id, status: 'REJECTED' });
-    }, 400);
-  });
+  const res = await api.put(`/admin/planners/${id}/reject`);
+  return res && res.data ? res.data : res;
+}
+
+export async function toggleUserStatus(id, enabled) {
+  const res = await api.put(`/api/admin/users/${id}/toggle-status?enabled=${enabled}`);
+  return res && res.data ? res.data : res;
+}
+
+export async function deleteUser(id) {
+  const res = await api.delete(`/api/admin/users/${id}`);
+  return res && res.data ? res.data : res;
 }
 
 export async function getBookings() {
-  try {
-    const res = await api.get('/admin/bookings');
-    if (res && res.data && res.data.length > 0) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock bookings for admin:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('bookings.json');
-      resolve(data);
-    }, 400);
-  });
+  const res = await api.get('/admin/bookings');
+  return res && res.data ? res.data : [];
+}
+
+export async function getBookingDetails(id) {
+  const res = await api.get(`/api/admin/bookings/${id}/details`);
+  return res && res.data ? res.data : null;
+}
+
+export async function updateBookingStatus(id, status) {
+  const res = await api.put(`/api/admin/bookings/${id}/status?status=${status}`);
+  return res && res.data ? res.data : res;
+}
+
+export async function deleteBooking(id) {
+  const res = await api.delete(`/api/admin/bookings/${id}`);
+  return res && res.data ? res.data : res;
 }
 
 export async function getPackages() {
-  try {
-    const res = await api.get('/packages');
-    if (res && res.data && res.data.length > 0) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock packages for admin:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('packages.json');
-      resolve(data);
-    }, 400);
-  });
+  const res = await api.get('/packages');
+  return res && res.data ? res.data : [];
 }
 
-export async function getPayments() {
-  try {
-    const res = await api.get('/admin/payments');
-    if (res && res.data && res.data.length > 0) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock payments for admin:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('payments.json');
-      resolve(data);
-    }, 400);
-  });
+export async function getPayments(status) {
+  const query = status && status !== 'All' ? `?status=${encodeURIComponent(status)}` : '';
+  const res = await api.get(`/admin/payments${query}`);
+  return res && res.data ? res.data : [];
 }
 
-export async function getFeedbacks() {
-  try {
-    const res = await api.get('/admin/reports/feedback');
-    if (res && res.data && res.data.length > 0) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock feedbacks for admin:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('reviews.json');
-      resolve(data);
-    }, 400);
+export async function getPaymentDetails(id) {
+  const res = await api.get(`/admin/payments/${id}`);
+  return res && res.data ? res.data : null;
+}
+
+export async function getPaymentsSummary() {
+  const res = await api.get('/admin/payments/summary');
+  return res && res.data ? res.data : null;
+}
+
+export async function getFeedbacks(filters = {}) {
+  const params = new URLSearchParams();
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '' && value !== 'All') {
+      params.append(key, value);
+    }
   });
+  const query = params.toString() ? `?${params.toString()}` : '';
+  const res = await api.get(`/admin/reports/feedback${query}`);
+  return res && res.data ? res.data : [];
+}
+
+export async function getFeedbackDetails(id) {
+  const res = await api.get(`/admin/reports/feedback/${id}`);
+  return res && res.data ? res.data : null;
+}
+
+export async function deleteFeedback(id) {
+  const res = await api.delete(`/admin/reports/feedback/${id}`);
+  return res && res.data ? res.data : res;
+}
+
+export async function getFeedbackSummary() {
+  const res = await api.get('/admin/reports/feedback/summary');
+  return res && res.data ? res.data : null;
 }

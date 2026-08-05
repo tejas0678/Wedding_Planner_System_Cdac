@@ -2,17 +2,28 @@ import React from 'react';
 
 // ============= STATUS COMPONENT =============
 export const Status = ({ status }) => {
-  const colors = {
-    'Pending': 'bg-yellow-100 text-yellow-800',
-    'Accepted': 'bg-green-100 text-green-800',
-    'Rejected': 'bg-red-100 text-red-800',
-    'Completed': 'bg-blue-100 text-blue-800',
-    'Paid': 'bg-purple-100 text-purple-800',
-    'In Progress': 'bg-indigo-100 text-indigo-800'
-  };
+  const normStatus = (status || 'PENDING').toUpperCase();
+
+  let colorClass = 'bg-amber-100 text-amber-800 border border-amber-200';
+  let label = '🟡 Pending Approval';
+
+  if (normStatus === 'CONFIRMED' || normStatus === 'ACCEPTED') {
+    colorClass = 'bg-emerald-100 text-emerald-800 border border-emerald-200';
+    label = '🟢 Confirmed';
+  } else if (normStatus === 'REJECTED') {
+    colorClass = 'bg-rose-100 text-rose-800 border border-rose-200';
+    label = '🔴 Rejected';
+  } else if (normStatus === 'COMPLETED') {
+    colorClass = 'bg-blue-100 text-blue-800 border border-blue-200';
+    label = '🔵 Completed';
+  } else if (normStatus === 'PAID') {
+    colorClass = 'bg-purple-100 text-purple-800 border border-purple-200';
+    label = 'Paid';
+  }
+
   return (
-    <span className={`px-3 py-1 rounded-full text-xs font-medium ${colors[status] || 'bg-gray-100 text-gray-800'}`}>
-      {status}
+    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${colorClass}`}>
+      {label}
     </span>
   );
 };

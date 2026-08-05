@@ -1,37 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createBooking } from '../../services/bookingService';
+import BookingModal from './BookingModal';
 
 const PackageCard = ({ packageData }) => {
   const navigate = useNavigate();
-  const { id, title, name, price, vendor, plannerName, image, imageUrl, capacity } = packageData;
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const { id, title, name, price, vendor, plannerName, image, imageUrl, capacity } = packageData || {};
   const pkgTitle = title || name || 'Royal Heritage Package';
 
-  const handleBookClick = async (e) => {
+  const handleBookClick = (e) => {
     if (e) e.stopPropagation();
-    const token = localStorage.getItem('authToken');
 
+    const token = localStorage.getItem('authToken');
     if (!token) {
       alert('Please sign in to continue.');
       navigate('/login');
       return;
     }
 
-    try {
-      await createBooking({
-        packageId: id,
-        plannerId: packageData.plannerId || 1,
-        packageName: pkgTitle,
-        amount: price,
-        plannerName: plannerName || vendor || "Royal Touch Weddings Studio",
-        guestCount: capacity || "300 Guests"
-      });
-      alert(`Booking Request for "${pkgTitle}" Created Successfully! Redirecting to your Client Dashboard...`);
-      navigate('/client/dashboard');
-    } catch (err) {
-      console.error("Booking error:", err);
-      alert("Failed to create booking. Please try again.");
-    }
+    setIsBookingModalOpen(true);
+  };
+
+  const handleCustomizeClick = (e) => {
+    if (e) e.stopPropagation();
+    navigate('/client/dashboard');
   };
 
   return (
@@ -73,7 +65,7 @@ const PackageCard = ({ packageData }) => {
             Book Package
           </button>
           <button
-            onClick={handleBookClick}
+            onClick={handleCustomizeClick}
             className="flex-1 bg-[#FFF0F3] hover:bg-[#FCE7F0] text-[#EC3664] text-center py-3 rounded-full text-xs font-bold transition-colors cursor-pointer"
           >
             Customize
@@ -81,6 +73,20 @@ const PackageCard = ({ packageData }) => {
         </div>
 
       </div>
+
+      <BookingModal
+        isOpen={isBookingModalOpen}
+        pkg={{
+          id,
+          packageName: pkgTitle,
+          price,
+          plannerId: packageData?.plannerId,
+          plannerName: plannerName || vendor,
+          capacity,
+          eventType: packageData?.eventType,
+        }}
+        onClose={() => setIsBookingModalOpen(false)}
+      />
     </div>
   );
 };

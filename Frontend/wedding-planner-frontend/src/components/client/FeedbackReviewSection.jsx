@@ -2,39 +2,14 @@ import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import { FiEdit, FiTrash2, FiUploadCloud, FiCheck, FiMessageCircle, FiPlus } from 'react-icons/fi';
 
-const defaultReviews = [
-  {
-    id: 1,
-    weddingName: 'Royal Udaipur Palace Wedding',
-    plannerName: 'Royal Touch Weddings Studio',
-    rating: 5,
-    title: 'Magnificent Royal Mandap & Seamless Execution!',
-    description: 'Our wedding at The Leela Palace Udaipur was truly a fairytale. Royal Touch Weddings Studio handled all 500 guests with pure elegance. The floating flower mandap was breathtaking!',
-    date: '2026-07-20',
-    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=600&auto=format&fit=crop',
-    plannerReply: 'Namaste Tejash & Meera! It was an absolute honor crafting your dream palace celebration. Wishing you endless bliss together!',
-  },
-  {
-    id: 2,
-    weddingName: 'Sunset Beach Romance Goa',
-    plannerName: 'Destination Forever Planners',
-    rating: 5,
-    title: 'Unforgettable Beachside Sunset Ceremony',
-    description: 'The barefoot gazebo mandap along Benaulim Beach was magical. Live acoustic band and seafood barbecue were top-notch.',
-    date: '2026-06-15',
-    image: 'https://images.unsplash.com/photo-1544078751-58fee2d8a03b?w=600&auto=format&fit=crop',
-    plannerReply: 'Thank you for your lovely feedback! Cheers to your beachside togetherness!',
-  },
-];
-
 export default function FeedbackReviewSection() {
-  const [reviews, setReviews] = useState(defaultReviews);
+  const [reviews, setReviews] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingReviewId, setEditingReviewId] = useState(null);
 
   // Form State
-  const [weddingName, setWeddingName] = useState('Royal Heritage Destination Package');
-  const [plannerName, setPlannerName] = useState('Royal Touch Weddings Studio');
+  const [weddingName, setWeddingName] = useState('');
+  const [plannerName, setPlannerName] = useState('');
   const [rating, setRating] = useState(5);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -60,12 +35,12 @@ export default function FeedbackReviewSection() {
         reviews.map((r) =>
           r.id === editingReviewId
             ? {
-                ...r,
-                rating,
-                title,
-                description,
-                image: imagePreview || r.image,
-              }
+              ...r,
+              rating,
+              title,
+              description,
+              image: imagePreview || r.image,
+            }
             : r
         )
       );
@@ -110,9 +85,14 @@ export default function FeedbackReviewSection() {
     }
   };
 
+  // Calculate dynamic stats
+  const averageRating = reviews.length > 0
+    ? (reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length).toFixed(1)
+    : 0;
+
   return (
     <div className="space-y-8">
-      
+
       {/* 1. OVERVIEW & AVERAGE RATING BANNER */}
       <div className="bg-white rounded-3xl border border-rose-100/80 p-6 sm:p-8 shadow-xs flex flex-col md:flex-row items-center justify-between gap-6">
         <div>
@@ -128,20 +108,22 @@ export default function FeedbackReviewSection() {
         </div>
 
         {/* Average Rating Capsule */}
-        <div className="flex items-center gap-4 bg-[#FFF9FA] border border-rose-100 p-4 rounded-2xl shrink-0">
-          <div className="text-center">
-            <span className="font-serif text-4xl font-bold text-gray-900 block">4.9</span>
-            <div className="flex items-center gap-1 text-amber-400 text-xs mt-0.5">
-              {[...Array(5)].map((_, i) => (
-                <FaStar key={i} className="w-3.5 h-3.5" />
-              ))}
+        {reviews.length > 0 && (
+          <div className="flex items-center gap-4 bg-[#FFF9FA] border border-rose-100 p-4 rounded-2xl shrink-0">
+            <div className="text-center">
+              <span className="font-serif text-4xl font-bold text-gray-900 block">{averageRating}</span>
+              <div className="flex items-center gap-1 text-amber-400 text-xs mt-0.5 justify-center">
+                {[...Array(5)].map((_, i) => (
+                  <FaStar key={i} className={`w-3.5 h-3.5 ${i < Math.round(averageRating) ? 'text-amber-400' : 'text-gray-200'}`} />
+                ))}
+              </div>
+            </div>
+            <div className="border-l border-rose-200/60 pl-4 text-xs">
+              <span className="font-bold text-gray-800 block">Verified Planner Score</span>
+              <span className="text-gray-500 font-light">Based on {reviews.length} verified review{reviews.length === 1 ? '' : 's'}</span>
             </div>
           </div>
-          <div className="border-l border-rose-200/60 pl-4 text-xs">
-            <span className="font-bold text-gray-800 block">Verified Planner Score</span>
-            <span className="text-gray-500 font-light">Based on 128 verified couple reviews</span>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* 2. WRITE REVIEW BUTTON / TOGGLE */}
@@ -175,15 +157,25 @@ export default function FeedbackReviewSection() {
           <form onSubmit={handleSaveReview} className="space-y-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Select Booking</label>
-                <select
+                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Booking/Event Name</label>
+                <input
+                  type="text"
                   value={weddingName}
                   onChange={(e) => setWeddingName(e.target.value)}
+                  placeholder="e.g. Destination Wedding Package"
                   className="w-full bg-[#FFF9FA] border border-rose-100 rounded-xl px-3.5 py-2.5 text-xs font-medium text-gray-800 focus:outline-none"
-                >
-                  <option value="Royal Heritage Destination Package">Royal Heritage Destination Package (Udaipur)</option>
-                  <option value="Sunset Beach Romance Package">Sunset Beach Romance Package (Goa)</option>
-                </select>
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Planner/Studio Name</label>
+                <input
+                  type="text"
+                  value={plannerName}
+                  onChange={(e) => setPlannerName(e.target.value)}
+                  placeholder="e.g. Touch Weddings Studio"
+                  className="w-full bg-[#FFF9FA] border border-rose-100 rounded-xl px-3.5 py-2.5 text-xs font-medium text-gray-800 focus:outline-none"
+                />
               </div>
 
               {/* Interactive Star Rating */}

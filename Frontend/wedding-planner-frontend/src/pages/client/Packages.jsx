@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import PackageCard from '../../components/common/PackageCard'
+import { getPublicPackages } from '../../services/clientService'
 
 export default function Packages() {
   const [packages, setPackages] = useState([])
@@ -9,28 +10,17 @@ export default function Packages() {
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        // Replace with actual API call
-        // const response = await fetch('/api/packages')
-        // const data = await response.json()
-        // setPackages(data)
-        
-        // For now, using empty array to show no data state
-        setPackages([])
-        setLoading(false)
+        const data = await getPublicPackages()
+        setPackages(data || [])
       } catch (error) {
         console.error('Error fetching packages:', error)
+      } finally {
         setLoading(false)
       }
     }
 
     fetchPackages()
   }, [])
-
-  const handleSelectPackage = (pkg) => {
-    // Handle package selection - navigate to booking or open modal
-    console.log('Selected package:', pkg)
-    // navigate('/client/bookings', { state: { package: pkg } })
-  }
 
   if (loading) {
     return (
@@ -56,11 +46,9 @@ export default function Packages() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-5xl mx-auto">
           {packages.map((pkg) => (
-            <PackageCard 
-              key={pkg.id} 
-              pkg={pkg} 
-              featured={pkg.featured} 
-              onSelect={() => handleSelectPackage(pkg)}
+            <PackageCard
+              key={pkg.id}
+              packageData={pkg}
             />
           ))}
         </div>

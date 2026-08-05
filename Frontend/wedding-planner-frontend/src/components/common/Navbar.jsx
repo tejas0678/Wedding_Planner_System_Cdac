@@ -64,20 +64,24 @@ const Navbar = () => {
             >
               Home
             </Link>
-            <Link 
-              to="/find-planners" 
-              className="flex items-center gap-1.5 text-gray-700 hover:text-[#EC3664] transition-colors py-1"
-            >
-              <FiSearch className="w-4 h-4 text-[#EC3664]" />
-              <span>Find Planners</span>
-            </Link>
-            <Link 
-              to="/packages" 
-              className="flex items-center gap-1.5 text-gray-700 hover:text-[#EC3664] transition-colors py-1"
-            >
-              <HiSparkles className="w-4 h-4 text-[#C9972C]" />
-              <span>Packages</span>
-            </Link>
+            {userRole !== 'PLANNER' && (
+              <>
+                <Link 
+                  to="/find-planners" 
+                  className="flex items-center gap-1.5 text-gray-700 hover:text-[#EC3664] transition-colors py-1"
+                >
+                  <FiSearch className="w-4 h-4 text-[#EC3664]" />
+                  <span>Find Planners</span>
+                </Link>
+                <Link 
+                  to="/packages" 
+                  className="flex items-center gap-1.5 text-gray-700 hover:text-[#EC3664] transition-colors py-1"
+                >
+                  <HiSparkles className="w-4 h-4 text-[#C9972C]" />
+                  <span>Packages</span>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Right Section: Auth Pill or Sign In / Get Started */}
@@ -165,12 +169,16 @@ const Navbar = () => {
         <div className="md:hidden bg-white border-t border-gray-100 py-4 px-4 shadow-lg">
           <div className="flex flex-col space-y-3">
             <Link to="/home" onClick={closeMenus} className="text-gray-800 hover:text-[#EC3664] font-medium py-2">Home</Link>
-            <Link to="/find-planners" onClick={closeMenus} className="flex items-center gap-2 text-gray-800 hover:text-[#EC3664] font-medium py-2">
-              <FiSearch className="w-4 h-4 text-[#EC3664]" /> Find Planners
-            </Link>
-            <Link to="/packages" onClick={closeMenus} className="flex items-center gap-2 text-gray-800 hover:text-[#EC3664] font-medium py-2">
-              <HiSparkles className="w-4 h-4 text-[#C9972C]" /> Packages
-            </Link>
+            {userRole !== 'PLANNER' && (
+              <>
+                <Link to="/find-planners" onClick={closeMenus} className="flex items-center gap-2 text-gray-800 hover:text-[#EC3664] font-medium py-2">
+                  <FiSearch className="w-4 h-4 text-[#EC3664]" /> Find Planners
+                </Link>
+                <Link to="/packages" onClick={closeMenus} className="flex items-center gap-2 text-gray-800 hover:text-[#EC3664] font-medium py-2">
+                  <HiSparkles className="w-4 h-4 text-[#C9972C]" /> Packages
+                </Link>
+              </>
+            )}
             
             <div className="pt-3 border-t border-gray-100 flex flex-col gap-2">
               {authToken ? (

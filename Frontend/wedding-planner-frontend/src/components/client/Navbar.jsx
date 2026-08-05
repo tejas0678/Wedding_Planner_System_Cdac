@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaHeart as FaHeartIcon } from 'react-icons/fa';
 import { FiSearch, FiLogOut, FiCalendar, FiStar } from 'react-icons/fi';
+import NotificationBell from '../common/NotificationBell';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -69,6 +70,7 @@ export default function Navbar() {
 
         {/* Right User Capsule Pill */}
         <div className="flex items-center gap-3">
+          <NotificationBell />
           <div className="bg-rose-50/80 border border-rose-100/80 rounded-full px-4 py-1.5 flex items-center gap-2.5 shadow-2xs">
             <div className="w-7 h-7 rounded-full bg-[#EC3664] text-white flex items-center justify-center text-xs font-bold shadow-xs">
               T

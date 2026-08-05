@@ -1,219 +1,136 @@
 import api from './api';
 
-const fetchMockData = async (fileName) => {
-  const res = await fetch(`/mock/${fileName}`);
-  return await res.json();
+export const getPlanners = async (city, keyword) => {
+  let url = '/planners';
+  const params = new URLSearchParams();
+  if (city && city !== 'All') params.append('city', city);
+  if (keyword) params.append('keyword', keyword);
+  if (params.toString()) url += `?${params.toString()}`;
+  const res = await api.get(url);
+  return res && res.data ? res.data : [];
 };
 
-export const getPlanners = async () => {
-  try {
-    const res = await api.get('/planners');
-    if (res && res.data && res.data.length > 0) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock planners:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('planners.json');
-      resolve(data);
-    }, 400);
-  });
+export const getPackagesByPlannerId = async (plannerId) => {
+  const res = await api.get(`/packages/planner/${plannerId}`);
+  return res && res.data ? res.data : [];
 };
 
 export const getPlannerById = async (id) => {
-  try {
-    const res = await api.get(`/planners/${id}`);
-    if (res && res.data) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock planner details:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('plannerDetails.json');
-      resolve(data);
-    }, 400);
-  });
+  const res = await api.get(`/planners/${id}`);
+  return res && res.data ? res.data : res;
 };
 
 export const getPlannerDashboardStats = async () => {
-  try {
-    const res = await api.get('/planner/dashboard/stats');
-    if (res && res.data) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock planner dashboard stats:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('plannersDashboard.json');
-      resolve(data);
-    }, 400);
-  });
+  const res = await api.get('/planner/dashboard/stats');
+  return res && res.data ? res.data : res;
 };
 
 export const getPlannerProfile = async () => {
-  try {
-    const res = await api.get('/planner/profile');
-    if (res && res.data) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock planner profile:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('plannerDetails.json');
-      resolve(data);
-    }, 400);
-  });
+  const res = await api.get('/planner/profile');
+  return res && res.data ? res.data : res;
 };
 
 export const updatePlannerProfile = async (data) => {
-  try {
-    const res = await api.put('/planner/profile', data);
-    if (res && res.data) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, simulating planner profile update:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ success: true, ...data });
-    }, 400);
-  });
+  const res = await api.put('/planner/profile', data);
+  return res && res.data ? res.data : res;
 };
 
 export const getPlannerPackages = async () => {
-  try {
-    const res = await api.get('/planner/packages');
-    if (res && res.data && res.data.length > 0) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock packages:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('packages.json');
-      resolve(data);
-    }, 400);
-  });
+  const res = await api.get('/planner/packages');
+  return res && res.data ? res.data : [];
 };
 
 export const createPlannerPackage = async (packageData) => {
-  try {
-    const res = await api.post('/planner/packages', packageData);
-    if (res && res.data) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, simulating package creation:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ id: Date.now(), ...packageData });
-    }, 400);
-  });
+  const res = await api.post('/planner/packages', packageData);
+  return res && res.data ? res.data : res;
+};
+
+export const updatePlannerPackage = async (id, packageData) => {
+  const res = await api.put(`/planner/packages/${id}`, packageData);
+  return res && res.data ? res.data : res;
+};
+
+export const deletePlannerPackage = async (id) => {
+  const res = await api.delete(`/planner/packages/${id}`);
+  return res && res.data ? res.data : res;
 };
 
 export const getPlannerServices = async () => {
-  try {
-    const res = await api.get('/planner/services');
-    if (res && res.data && res.data.length > 0) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock services:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('services.json');
-      resolve(data);
-    }, 400);
-  });
+  const res = await api.get('/planner/services');
+  return res && res.data ? res.data : [];
 };
 
 export const createPlannerService = async (serviceData) => {
-  try {
-    const res = await api.post('/planner/services', serviceData);
-    if (res && res.data) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, simulating service creation:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ id: Date.now(), ...serviceData });
-    }, 400);
-  });
+  const res = await api.post('/planner/services', serviceData);
+  return res && res.data ? res.data : res;
+};
+
+export const updatePlannerService = async (id, serviceData) => {
+  const res = await api.put(`/planner/services/${id}`, serviceData);
+  return res && res.data ? res.data : res;
+};
+
+export const deletePlannerService = async (id) => {
+  const res = await api.delete(`/planner/services/${id}`);
+  return res && res.data ? res.data : res;
 };
 
 export const getPlannerPortfolio = async () => {
-  try {
-    const res = await api.get('/planner/portfolio');
-    if (res && res.data && res.data.length > 0) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock portfolio:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('plannerDetails.json');
-      resolve(data.gallery || []);
-    }, 400);
-  });
+  const res = await api.get('/planner/portfolio');
+  return res && res.data ? res.data : [];
 };
 
 export const createPortfolioItem = async (portfolioData) => {
-  try {
-    const res = await api.post('/planner/portfolio', portfolioData);
-    if (res && res.data) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, simulating portfolio item creation:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ id: Date.now(), ...portfolioData });
-    }, 400);
-  });
+  const res = await api.post('/planner/portfolio', portfolioData);
+  return res && res.data ? res.data : res;
 };
 
 export const deletePortfolioItem = async (id) => {
-  try {
-    const res = await api.delete(`/planner/portfolio/${id}`);
-    if (res && res.data) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, simulating portfolio item deletion:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ success: true, id });
-    }, 400);
-  });
+  const res = await api.delete(`/planner/portfolio/${id}`);
+  return res && res.data ? res.data : res;
 };
 
 export const getPlannerBookings = async () => {
-  try {
-    const res = await api.get('/planner/bookings');
-    if (res && res.data && res.data.length > 0) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, fetching mock planner bookings:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('bookingHistory.json');
-      resolve(data);
-    }, 400);
-  });
+  const res = await api.get('/planner/bookings');
+  return res && res.data ? res.data : [];
+};
+
+export const acceptBooking = async (bookingId) => {
+  const res = await api.put(`/planner/bookings/${bookingId}/accept`);
+  return res && res.data ? res.data : res;
+};
+
+export const rejectBooking = async (bookingId) => {
+  const res = await api.put(`/planner/bookings/${bookingId}/reject`);
+  return res && res.data ? res.data : res;
 };
 
 export const updateBookingStatus = async (bookingId, status) => {
-  try {
-    const res = await api.put(`/planner/bookings/${bookingId}/status?status=${status}`);
-    if (res && res.data) return res.data;
-  } catch (err) {
-    console.warn("Backend unavailable, simulating booking status update:", err);
-  }
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ success: true, bookingId, status });
-    }, 400);
-  });
+  const res = await api.put(`/planner/bookings/${bookingId}/status?status=${status}`);
+  return res && res.data ? res.data : res;
 };
 
 export const getCities = async () => {
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const data = await fetchMockData('cities.json');
-      resolve(data);
-    }, 400);
-  });
+  const res = await api.get('/cities');
+  return res && res.data ? res.data : [];
+};
+
+export const getPlannerCustomizations = async () => {
+  const res = await api.get('/planner/customizations');
+  return res && res.data ? res.data : [];
+};
+
+export const updateCustomizationStatus = async (id, status) => {
+  const res = await api.patch(`/planner/customizations/${id}/status`, { status });
+  return res && res.data ? res.data : res;
+};
+
+export const updateCustomizationRequest = async (id, data) => {
+  const res = await api.put(`/planner/customizations/${id}`, data);
+  return res && res.data ? res.data : res;
+};
+
+export const sendCustomizationQuotation = async (id) => {
+  const res = await api.post(`/planner/customizations/${id}/quote`);
+  return res && res.data ? res.data : res;
 };
