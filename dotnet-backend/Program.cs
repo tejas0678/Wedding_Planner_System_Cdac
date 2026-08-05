@@ -3,7 +3,8 @@ using WeddingPlanner.DotNet.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.UseUrls("http://localhost:5000");
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+builder.WebHost.UseUrls($"http://*:{port}");
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
